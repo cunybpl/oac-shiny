@@ -284,13 +284,54 @@ server <- function(input, output) {
     }
   })
   
+  #available date range of all uploaded files
+  dateRange <- reactive({
+    
+    if(dataUploaded()){
+      min <- NA
+      max <- NA
+      
+      all_data <- c(datData(), matData(), oatData(), ratData(), fanData())
+      
+      for(data in all_data){
+        data <- na.trim(data, is.na = 'all')
+        
+        start <- head(index(data),1)
+        start <- as.Date(start)
+        end <- tail(index(data),1)
+        end <- as.Date(end)
+        
+        if(is.na(min)){
+          min <- start
+        }else{
+          if(start < min){
+            min <- start
+          }
+        }
+        
+        if(is.na(max)){
+          max <- end
+        }else{
+          if(end > max){
+            max <- end
+          }
+        }
+      }
+      return(c(min,max))
+    }
+  })
+  
+  #UI output to enter Date Range, restricted to dates available within available files
+  output$date_range <- renderUI({
+    dateRangeInput("date_range","Range of Dates to Plot",start = dateRange()[1], end =dateRange()[2],  min = dateRange()[1], max = dateRange()[2])
+  })
+  
   #Merge available xts objects
   getData <- reactive({
     if(!dataUploaded()){
       return (NULL)
     }
     else{
-      
       #If multiple files, merge into one XTS table
       #TODO : Rework error-handling method with trycatch()(I'm new to this)
       
@@ -298,22 +339,22 @@ server <- function(input, output) {
       #The purpose of this block is to make sure any NULL values are not the first argument
       if(onlyOne() == FALSE){
         
-        t1 <- try(d <- merge(datData(),matData(),oatData(),ratData(),fanData()))
+        t1 <- try(d <- merge(datData(),matData(),oatData(),ratData()))
         if(class(t1) != "try-error"){
           return (t1)
         }
         
-        t1 <-try(d <- merge(matData(),datData(),oatData(),ratData(),fanData()))
+        t1 <-try(d <- merge(matData(),datData(),oatData(),ratData()))
         if(class(t1) != "try-error"){
           return (t1)
         }
         
-        t1 <-try(d <- merge(oatData(),matData(),datData(),ratData(),fanData()))
+        t1 <-try(d <- merge(oatData(),matData(),datData(),ratData()))
         if(class(t1) != "try-error"){
           return (t1)
         }
         
-        t1 <-try(d <- merge(ratData(),matData(),datData(),oatData(),fanData()))
+        t1 <-try(d <- merge(ratData(),matData(),datData(),oatData()))
         if(class(t1) != "try-error"){
           return (t1)
         }
@@ -321,45 +362,70 @@ server <- function(input, output) {
         
         #if only one file present, return it instead of trying to merge
         if(onlyOne() == "dat"){
-          return(merge(datData(),fanData()))
+          return(merge(datData()))
         }
         else if(onlyOne() == "mat"){
-          return(merge(matData(),fanData()))
+          return(merge(matData()))
         }
         else if(onlyOne() == "oat"){
-          return(merge(oatData(),fanData()))
+          return(merge(oatData()))
         }
         else if(onlyOne() == "rat"){
-          return(merge(ratData(),fanData()))
+          return(merge(ratData()))
         }
       }
     }
   })
   
-  #Return (min,max) Date objects for time series
-  getDateRange <- reactive({
-    if(dataUploaded()){
-      drop <- 'fan_status' #don't account for fan-status in available date range
-      data <- getData()
-      data <- data[,names(data) != drop]
-      data <- na.trim(data, is.na = 'all')
+  #fix fanData() so endpoints are not cutof by date_range
+  fan_clean <- eventReactive(input$date_range,{
+    data <- fanData()
+    
+    start <- head(index(data),1)
+    fan_start <- as.Date(start)
+    
+    end <- tail(index(data),1)
+    fan_end <- as.Date(end)
+    
+    plot_start <- dateRange()[1]
+    plot_end <- dateRange()[2]
+    
+    #TODO
+    #if plot_start is later than fan_start, insert into data
+    if(plot_start > fan_start)
+    {
+      #get the first value in data before plot_start
+    
+      #insert value at plot_start
       
-      start <- head(index(data),1)
-      start <- as.Date(start)
-      end <- tail(index(data),1)
-      end <- as.Date(end)
-      c(start,end)
     }
+    
+    if(plot_end < fan_end){
+    #if plot_end is earlier than fan_end, insert into data
+    
+      #get the first value in data after plot_end
+    
+      #insert value at plot_end
+    }
+    
+    return(data)
   })
   
-  #UI output to enter Date Range, restricted to dates available within available files
-  output$date_range <- renderUI({
-    dateRangeInput("date_range","Range of Dates to Plot",start = getDateRange()[1], end =getDateRange()[2],  min = getDateRange()[1], max = getDateRange()[2])
+  #Merge main data with fan_clean data
+  data_all <- reactive({
+    
   })
+  
+  #subset all data to date_range
+  
+  data_in_date_range <- eventReactive(updatePlot(),{
+    
+  })
+  
   
   #Subset Data to selected date_range
   Data_in_dateRange <- reactive({
-    
+
     start <- as.character(input$date_range[1])
     end <- as.character(input$date_range[2])
     dr <- paste0(start,"/",end)
