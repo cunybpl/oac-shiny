@@ -191,7 +191,7 @@ server <- function(input, output) {
       return(d1)
     }
     else{
-      return (NULL)
+      return (NA)
     }
   })
   
@@ -203,7 +203,7 @@ server <- function(input, output) {
       return(d1)
     }
     else{
-      return (NULL)
+      return (NA)
     }
   })
   
@@ -215,7 +215,7 @@ server <- function(input, output) {
       return(d1)
     }
     else{
-      return (NULL)
+      return (NA)
     }
   })
   
@@ -227,7 +227,7 @@ server <- function(input, output) {
       return(d1)
     }
     else{
-      return (NULL)
+      return (NA)
     }
   })
   
@@ -237,6 +237,9 @@ server <- function(input, output) {
       d1 <- fan_data_sorter(input$fanFile$datapath)
       colnames(d1) <- 'fan_status'
       return(d1)
+    }
+    else{
+      return(NA)
     }
   })
   
@@ -284,46 +287,74 @@ server <- function(input, output) {
     }
   })
   
-  #available date range of all uploaded files
-  dateRange <- reactive({
+  #available date range of all uploaded files return: (min date, max date)
+  dt_range <- reactive({
+    
+    earliest_dt <- NA
+    latest_dt <- NA
     
     if(dataUploaded()){
-      min <- NA
-      max <- NA
       
-      all_data <- c(datData(), matData(), oatData(), ratData(), fanData())
+      dat <- datData()
+      mat <- matData()
+      oat <- oatData()
+      rat <- ratData()
+      fan <- fanData()
+      
+      all_data <- list(dat,mat,oat,rat,fan)
+      notNA <- !is.na(all_data)
+      all_data <- all_data[notNA]
       
       for(data in all_data){
+      
         data <- na.trim(data, is.na = 'all')
         
         start <- head(index(data),1)
-        start <- as.Date(start)
+        start <- as.POSIXct(start)
         end <- tail(index(data),1)
-        end <- as.Date(end)
+        end <- as.POSIXct(end)
         
-        if(is.na(min)){
-          min <- start
+        if(is.na(earliest_dt)){
+          earliest_dt <- start
         }else{
-          if(start < min){
-            min <- start
+          if(start < earliest_dt){
+            earliest_dt <- start
           }
         }
         
-        if(is.na(max)){
-          max <- end
+        if(is.na(latest_dt)){
+          latest_dt <- end
         }else{
-          if(end > max){
-            max <- end
+          if(end > latest_dt){
+            latest_dt <- end
           }
         }
+        
       }
-      return(c(min,max))
     }
+    start_end <- c(earliest_dt,latest_dt)
   })
   
   #UI output to enter Date Range, restricted to dates available within available files
   output$date_range <- renderUI({
-    dateRangeInput("date_range","Range of Dates to Plot",start = dateRange()[1], end =dateRange()[2],  min = dateRange()[1], max = dateRange()[2])
+    start_date <- dt_range()[1]
+    end_date <- dt_range()[2]
+    
+    if(is.na(start_date)){
+      start_date <- today()
+    }
+    else{
+      start_date <- as.Date(start_date)
+    }
+    
+    if(is.na(end_date)){
+      end_date <- today()
+    }
+    else{
+      end_date <- as.Date(end_date)
+    }
+    
+    dateRangeInput("date_range","Range of Dates to Plot", start = start_date, end = end_date,  min = start_date, max = end_date)
   })
   
   #Merge available xts objects
@@ -387,8 +418,8 @@ server <- function(input, output) {
     end <- tail(index(data),1)
     fan_end <- as.Date(end)
     
-    plot_start <- dateRange()[1]
-    plot_end <- dateRange()[2]
+    plot_start <- dt_range()[1]
+    plot_end <- dt_range()[2]
     
     #TODO
     #if plot_start is later than fan_start, insert into data
