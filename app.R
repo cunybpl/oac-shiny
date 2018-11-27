@@ -4,13 +4,17 @@
 #***********This application assumes all .csv's are retrieved/exported through HOBOware***********
 
 #------------TODOS------------#
+#TODO:Switch from fan_data_sorter then fan_fix_endpoints to vice versa
+
+#TODO: Hide display of "transition lines" 0 -> 1, 1 -> 0 in fan_status trend
+
+#TODO: Hide all trends where fan_status is 0
 
 #TODO: Detect fahrenheit / Celsius based on header column name, ie: "Temp, (*F)"
 
 #TODO: Read/save serial number from first line of file (temperature loggers)
 
-#TODO: Fan Status: extend trend line to beginning and end of graph when dateRange cuts off values
-#disable trends in time ranges where fan-status is off
+#TODO: Fan Status: disable trends in time ranges where fan-status is off
 
 #TODO: Occupancy Scheduling
 
@@ -245,19 +249,76 @@ server <- function(input, output) {
   
   #Disable/Enable Plot Checkboxes
   disable('DATCheckbox')
-  observeEvent(datData(),enable('DATCheckbox'))
+  enable_dat <- eventReactive(datData(),{
+    if(!is.na(datData())){
+      return(TRUE)
+    }
+    else{
+      return(FALSE)
+    }
+  })
   
   disable('MATCheckbox')
-  observeEvent(matData(),enable('MATCheckbox'))
+  enable_mat <- eventReactive(matData(),{
+    if(!is.na(matData())){
+      return(TRUE)
+    }
+    else{
+      return(FALSE)
+    }
+  })
   
   disable('OATCheckbox')
-  observeEvent(oatData(),enable('OATCheckbox'))
+  enable_oat <- eventReactive(oatData(),{
+    if(!is.na(oatData())){
+      return(TRUE)
+    }
+    else{
+      return(FALSE)
+    }
+  })
   
   disable('RATCheckbox')
-  observeEvent(ratData(),enable('RATCheckbox'))
+  enable_rat <- eventReactive(ratData(),{
+    if(!is.na(ratData())){
+      return(TRUE)
+    }
+    else{
+      return(FALSE)
+    }
+  })
   
   disable('fan_statusCheckbox')
-  observeEvent(fanData(),enable('fan_statusCheckbox'))
+  enable_fan <- eventReactive(fanData(),{
+    if(!is.na(fanData())){
+      return(TRUE)
+    }
+    else{
+      return(FALSE)
+    }
+  })
+  
+  observeEvent(updatePlot(),{
+    if(enable_dat()){
+      enable('DATCheckbox')
+    }
+    
+    if(enable_mat()){
+      enable('MATCheckbox')
+    }
+    
+    if(enable_oat()){
+      enable('OATCheckbox')
+    }
+    
+    if(enable_rat()){
+      enable('RATCheckbox')
+    }
+    
+    if(enable_fan()){
+      enable('fan_statusCheckbox')
+    }
+  })
   
   #detect when only one temperature logger file is present, returns dat/mat etc string if true for that file
   onlyOne <- reactive({
@@ -364,103 +425,52 @@ server <- function(input, output) {
     }
     else{
       #If multiple files, merge into one XTS table
-      #TODO : Rework error-handling method with trycatch()(I'm new to this)
-      
-      #If first arguement of merge() is NULL, an error is thrown. 
-      #The purpose of this block is to make sure any NULL values are not the first argument
       if(onlyOne() == FALSE){
-        
-        t1 <- try(d <- merge(datData(),matData(),oatData(),ratData()))
-        if(class(t1) != "try-error"){
-          return (t1)
-        }
-        
-        t1 <-try(d <- merge(matData(),datData(),oatData(),ratData()))
-        if(class(t1) != "try-error"){
-          return (t1)
-        }
-        
-        t1 <-try(d <- merge(oatData(),matData(),datData(),ratData()))
-        if(class(t1) != "try-error"){
-          return (t1)
-        }
-        
-        t1 <-try(d <- merge(ratData(),matData(),datData(),oatData()))
-        if(class(t1) != "try-error"){
-          return (t1)
-        }
+        data <- list(datData(),matData(),oatData(),ratData())
+        notNA <- !is.na(data)
+        data <- data[notNA]
+        merged <- do.call(merge,data)
+        return(merged)
       }else{
         
         #if only one file present, return it instead of trying to merge
         if(onlyOne() == "dat"){
-          return(merge(datData()))
+          return(datData())
         }
         else if(onlyOne() == "mat"){
-          return(merge(matData()))
+          return(matData())
         }
         else if(onlyOne() == "oat"){
-          return(merge(oatData()))
+          return(oatData())
         }
         else if(onlyOne() == "rat"){
-          return(merge(ratData()))
+          return(ratData())
         }
       }
     }
   })
   
   #fix fanData() so endpoints are not cutof by date_range
-  fan_clean <- eventReactive(input$date_range,{
-    data <- fanData()
-    
-    start <- head(index(data),1)
-    fan_start <- as.Date(start)
-    
-    end <- tail(index(data),1)
-    fan_end <- as.Date(end)
-    
-    plot_start <- dt_range()[1]
-    plot_end <- dt_range()[2]
-    
-    #TODO
-    #if plot_start is later than fan_start, insert into data
-    if(plot_start > fan_start)
-    {
-      #get the first value in data before plot_start
-    
-      #insert value at plot_start
-      
+  fan_clean <- eventReactive(updatePlot(),{
+    if(!is.na(fanData())){
+      fan_fixed <- fix_fan_endpoints(fanData(),input$date_range)
     }
-    
-    if(plot_end < fan_end){
-    #if plot_end is earlier than fan_end, insert into data
-    
-      #get the first value in data after plot_end
-    
-      #insert value at plot_end
+    else{
+      return(NULL)
     }
-    
-    return(data)
   })
   
   #Merge main data with fan_clean data
   data_all <- reactive({
-    
+    merge(getData(),fan_clean())
   })
   
   #subset all data to date_range
-  
-  data_in_date_range <- eventReactive(updatePlot(),{
-    
-  })
-  
-  
-  #Subset Data to selected date_range
-  Data_in_dateRange <- reactive({
-
+  Data_in_dateRange <- eventReactive(updatePlot(),{
     start <- as.character(input$date_range[1])
     end <- as.character(input$date_range[2])
     dr <- paste0(start,"/",end)
-    data <- getData()[dr]
+    data <- data_all()[dr]
   })
   
   #UI availabe date range output

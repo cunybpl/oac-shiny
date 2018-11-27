@@ -69,3 +69,63 @@ fan_data_sorter <- function(filein){
     return(xtsdata)
   }
 }
+
+#Plug in values for endpoints of plot which cutoff fan_data
+fix_fan_endpoints <- function(fan_data, date_range){
+  
+  fan_data <- fan_data
+  index_fan <- index(fan_data)
+  core_fan <- coredata(fan_data)
+  
+  start <- date_range[1]
+  end <- date_range[2]
+  
+  fan_start <- head(index(fan_data),1)
+  fan_end <- tail(index(fan_data),1)
+  
+  #if no endpoints cutoff
+  if(fan_start > start && fan_end < end){
+    return(fan_data)
+  }
+  
+  #if beginning cutoff
+  if(fan_start < start){
+    prev <- index_fan[1]
+    prev_ind = 1
+    for(dt in index_fan[-1]){
+      if(dt > start){
+        break
+      }
+      prev <- dt
+      prev_ind <- prev_ind + 1
+    }
+    prev_val <- core_fan[prev_ind]
+    to_combine <- xts(prev_val, order.by = start)
+    fan_data <- rbind(fan_data, to_combine)
+  }
+  
+  #if end cutoff
+  if(fan_end > end){
+    
+    ind <- length(fan_data)
+    prev <- index_fan[ind]
+    
+    ind <- ind -1
+    prev_ind <- ind
+    
+    for(i in ind:1){
+      dt <- index_fan[i]
+      if(dt < end){
+        break
+      }
+      prev <- dt
+      prev_ind <- i
+    }
+    prev_val <- core_fan[prev_ind]
+    to_combine <- xts(prev_val, order.by = end)
+    fan_data <- rbind(fan_data, to_combine)
+  }
+  
+  #return fan_data with insertted endpoint values
+  return(fan_data)
+}
