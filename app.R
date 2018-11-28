@@ -14,8 +14,6 @@
 
 #TODO: Read/save serial number from first line of file (temperature loggers)
 
-#TODO: Fan Status: disable trends in time ranges where fan-status is off
-
 #TODO: Occupancy Scheduling
 
 #TODO: display serial number / date-range under file upload input
@@ -33,6 +31,11 @@ library(plotly)
 library(DT)
 library(shinyjs)
 source("data_prep.R")
+
+test_text <- 'testinghelloFinished'
+
+
+
 
 ui <- fluidPage( 
   useShinyjs(),
@@ -100,11 +103,16 @@ ui <- fluidPage(
         # ),
         #Date Range Selection
         uiOutput("date_range"),
-        actionButton("update_plot",label = "Update Plot!", width = '100%')
+        actionButton("update_plot",label = "Update Plot!", width = '100%'),
+        br(),br(),uiOutput("help_link")
         
     )),
     
     mainPanel(
+      conditionalPanel(condition = "output.plot == null",
+                       htmlOutput('start_instructions')),
+
+      
       #Plot output
       plotlyOutput("plot",height = '500px'),
       
@@ -186,6 +194,21 @@ server <- function(input, output) {
     dataUploaded()
   })
   outputOptions(output,'show_Plot_Options',suspendWhenHidden=FALSE)
+  
+  output$start_instructions <- renderUI({
+    str1 <- paste('TO GET STARTED:')
+    str2 <-  paste('1. In the Left Panel, click browse under the trend (DAT, MAT, etc.) you wish to upload')
+    str3 <- paste('2. In the popup window, find the .csv file that corresponds to your trend')
+    str4 <- paste('3. Repeat 1-2 for as many trends as you wish')
+    str5 <- paste('4. Click Update Plot to display the Plot of your uploaded data')
+    
+    h4(HTML(paste(str1,str2,str3,str4,str5, sep = '<br/>')))
+  })
+  
+  url <- a("HELP: INSTRUCTIONS PAGE", href="https://docs.google.com/document/d/1_gj1Itor2VpUSxC4BmDSIx8-18pU6dEZ9WCDyzQlVjY/edit?usp=sharing")
+  output$help_link <- renderUI({
+    tagList(h4(url))
+  })
   
   #Retrieve processed DAT xts object
   datData <- reactive({
