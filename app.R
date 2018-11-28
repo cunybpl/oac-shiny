@@ -205,7 +205,7 @@ server <- function(input, output) {
     h4(HTML(paste(str1,str2,str3,str4,str5, sep = '<br/>')))
   })
   
-  url <- a("HELP: INSTRUCTIONS PAGE", href="https://docs.google.com/document/d/e/2PACX-1vSqYcgS51UgN6R32jMq1mfZteSTSWqYPOwzM8wJE9ael5R6SjuC2N-fK-I26-bOpOZtDRL8L7ibM7ku/pub")
+  url <- a("HELP: INSTRUCTIONS", href="https://docs.google.com/document/d/e/2PACX-1vSqYcgS51UgN6R32jMq1mfZteSTSWqYPOwzM8wJE9ael5R6SjuC2N-fK-I26-bOpOZtDRL8L7ibM7ku/pub",target="_blank")
   output$help_link <- renderUI({
     tagList(h4(url))
   })
