@@ -231,3 +231,10 @@ fix_fan_endpoints <- function(fan_data, date_range){
 test <- fix_fan_endpoints(case_4_fan,dr_case4)
 
 
+data <- list(NA)
+data_index <- 1
+
+foo <- function(file_dp){
+  data[data_index] <- file_dp
+  data_index <- data_index + 1
+}
