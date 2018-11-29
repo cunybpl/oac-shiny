@@ -1,5 +1,52 @@
 #Convert first two columns of dataframe datain (time,value) to xts object
 #data_sorter is intended for use with temperature logger files only
+
+find_start <- function(column,formats){
+  count <- 1
+  for(entry in column){
+    
+    if(count > 50){
+      return(NA)
+    }
+    
+    result <- parse_date_time(entry,formats)
+    
+    if(!is.na(result)){
+      return(count)
+    }
+    count <- count + 1
+  }
+}
+
+get_date_times <- function(data){
+  formats <- c('Ymd HM','Ymd HMS','mdy IMS p')
+  
+  col1 <- data[[1]]
+  #col2 <- data[[2]]
+  
+  start <- find_start(col1,formats)
+  
+  if(!is.na(start)){
+    col <- tail(col1, -start)
+    dates <- parse_date_time(col,orders = formats)
+    
+    result <- list('datetimes' = dates,'start_pos' = start)
+    print(result$start_pos)
+    return(result)
+  }else{
+    return(NA)
+  }
+  
+  #TODO:Enable this block to support 2nd column datetimes(fan data)
+  # else{
+  #   
+  #   start <- find_start(col2,formats)
+  #   col <- tail(col2, -start)
+  #   dates <- parse_date_time(col,orders = formats, truncated = 1)
+  #   return(dates)
+  # }
+}
+
 data_sorter <- function(filein){
   
   if(is.null(filein)){
@@ -7,7 +54,7 @@ data_sorter <- function(filein){
   }
   else{
     #return data frame with empty strings as NA, header = 3 row (HOBOWARE)
-    datain <- read.csv(filein, skip = 2, header = TRUE, na.strings = "") #can add more NA strings here to improve cleaning
+    datain <- read.csv(filein, skip = 1, na.strings = "") #can add more NA strings here to improve cleaning
     cnames = c("time","temp")
     colnames(datain) <- cnames
     
@@ -15,11 +62,25 @@ data_sorter <- function(filein){
     complete <- datain[complete.cases(datain[,1:2]),]
     
     #convert string datetimes to POSIX, assumes year,month,day,hour,minute,second format (HOBOWARE)
-    datetimes <- complete$time
-    datetimes <- ymd_hms(datetimes)
+    gtd <- get_date_times(complete)
+    
+    if(is.na(gtd)){ #first column not datetime column
+      complete <- datain[complete.cases(datain[,2:3]),]
+      
+      complete <- subset(complete, select = -1)
+      
+      colnames(complete) <- cnames #fix colnames 
+      
+      gtd <- get_date_times(complete)
+    }
+    
+    datetimes <- gtd$datetimes
+    
+    start <- gtd$start_pos
     
     #Time series value          
     values <- complete$temp
+    values <- tail(values,-start)
     
     xtsdata <- xts(values,order.by = datetimes)
     
