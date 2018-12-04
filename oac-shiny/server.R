@@ -1,11 +1,27 @@
-#
-# This is the server logic of a Shiny web application. You can run the 
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
+#Outside Air Control Interactive Plotting 
+#Daniel Vignoles, Mark Campmier
+
+#SERVER
+
+#***********This application assumes all .csv's are retrieved/exported through HOBOware***********
+
+#------------TODOS------------#
+
+#TODO:Switch from fan_data_sorter then fan_fix_endpoints to vice versa
+
+#TODO: Occupancy Scheduling
+
+#TODO: Hide all trends where fan_status is 0
+
+#TODO: Hide display of "transition lines" 0 -> 1, 1 -> 0 in fan_status trend
+
+#TODO: Detect fahrenheit / Celsius based on header column name, ie: "Temp, (*F)"
+
+#TODO: Read/save serial number from first line of file (temperature loggers)
+
+#TODO: display serial number / date-range under file upload input
+
+#-------------------------------#
 
 library(shiny)
 library(xts)
