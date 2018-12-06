@@ -468,5 +468,199 @@ server <- function(input, output) {
   
   output$plot <- renderPlotly(plotVal())
   
+  ####----OCCUPANCY----####
+  
+  #disable/enable timeinputs for unoccupied/occupied
+  
+  disable('sun_start')
+  disable('sun_end')
+  observeEvent(input$sun_occ,{
+    if(input$sun_occ == TRUE){
+      enable('sun_start')
+      enable('sun_end')
+    }else{
+      disable('sun_start')
+      disable('sun_end')
+    }
+  })
+  
+  observeEvent(input$mon_occ,{
+    if(input$mon_occ == FALSE){
+      disable('mon_start')
+      disable('mon_end')
+    }else{
+      enable('mon_start')
+      enable('mon_end')
+    }
+  })
+
+  observeEvent(input$tue_occ,{
+    if(input$tue_occ == FALSE){
+      disable('tue_start')
+      disable('tue_end')
+    }else{
+      enable('tue_start')
+      enable('tue_end')
+    }
+  })
+
+  observeEvent(input$wed_occ,{
+    if(input$wed_occ == FALSE){
+      disable('wed_start')
+      disable('wed_end')
+    }else{
+      enable('wed_start')
+      enable('wed_end')
+    }
+  })
+
+  observeEvent(input$thu_occ,{
+    if(input$thu_occ == FALSE){
+      disable('thu_start')
+      disable('thu_end')
+    }else{
+      enable('thu_start')
+      enable('thu_end')
+    }
+  })
+
+  observeEvent(input$fri_occ,{
+    if(input$fri_occ == FALSE){
+      disable('fri_start')
+      disable('fri_end')
+    }else{
+      enable('fri_start')
+      enable('fri_end')
+    }
+  })
+
+  disable('sat_start')
+  disable('sat_end')
+  observeEvent(input$sat_occ,{
+    if(input$sat_occ == TRUE){
+      enable('sat_start')
+      enable('sat_end')
+    }else{
+      disable('sat_start')
+      disable('sat_end')
+    }
+  })
+  
+  #Prep Timeinputs
+  #NOTE: inputs sun_start, sun_end etc aree of clas POSIXlt
+  sun <- reactive({
+    if(input$sun_occ == FALSE){
+      return(NA)
+    }
+    else{
+      start <- input$sun_start
+      end <- input$sun_end
+      
+      sun <- c(start,end)
+      return(sun)
+    }
+  })
+  
+  mon <- reactive({
+    if(input$mon_occ == FALSE){
+      return(NA)
+    }else{
+      start <- input$mon_start
+      end <- input$mon_end
+      
+      mon <- c(start,end)
+      return(mon)
+    }
+  })
+  
+  tue <- reactive({
+    if(input$tue_occ == FALSE){
+      return(NA)
+    }else{
+      start <- input$tue_start
+      end <- input$tue_end
+      
+      tue <- c(start,end)
+      return(tue)
+    }
+  })
+  
+  wed <- reactive({
+    if(input$wed_occ == FALSE){
+      return(NA)
+    }else{
+      start <- input$wed_start
+      end <- input$wed_end
+      
+      wed <- c(start,end)
+      return(wed)
+    }
+  })
+  
+  thu <- reactive({
+    if(input$thu_occ == FALSE){
+      return(NA)
+    }else{
+      start <- input$thu_start
+      end <- input$thu_end
+      
+      thu <- c(start,end)
+      return(thu)
+    }
+  })
+  
+  fri <- reactive({
+    if(input$fri_occ == FALSE){
+      return(NA)
+    }else{
+      start <- input$fri_start
+      end <- input$fri_end
+      
+      fri <- c(start,end)
+      return(fri)
+    }
+  })
+  
+  sat <- reactive({
+    if(input$sat_occ == FALSE){
+      return(NA)
+    }else{
+      start <- input$sat_start
+      end <- input$sat_end
+      
+      sat <- c(start,end)
+      return(sat)
+    }
+  })
+  
+  #dataframe to write to file
+  occupancy <- reactive({
+    df <- data.frame(matrix(ncol = 3, nrow = 7))
+    x <- c("day", "start", "end")
+    colnames(df) <- x
+    
+    sunday <- c('sun',sun()[1],sun()[2])
+    df[1,] <- sunday
+    
+    monday <- c('mon',mon()[1],mon()[2])
+    df[2,] <- monday
+    return(df)
+  })
+  
+  observeEvent(mon(),{
+    print(occupancy())
+    print(mon()[1])
+    print(mon()[2])
+  })
+
+  # output$occ_csv <- downloadHandler(
+  #   filename = function(){
+  #     paste(input$occ_filename,'.csv',sep='')
+  #   },
+  #   content = function(file){
+  #     write.csv(occupancy(),file,na='NA')
+  #   },
+  #   contentType = 'text/csv')
+
 }
 

@@ -74,8 +74,9 @@ occupancyTab <- tabPanel('Occupancy',
                              
                            ),#1st split
                            wellPanel(
-                             actionButton('test','placeholder element'),
-                             uiOutput('schedule')
+                             textInput('occ_filename',label='Filename',value='occupancy_schedule'),
+                             downloadButton('occ_csv',label='Download Occupancy CSV')
+                             #TODO: Occupancy Schedule Previe Panel 
                            )
                          )
                          
