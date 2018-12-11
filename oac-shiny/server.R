@@ -553,8 +553,8 @@ server <- function(input, output) {
       return(NA)
     }
     else{
-      start <- input$sun_start
-      end <- input$sun_end
+      start <- as.POSIXct(input$sun_start)
+      end <- as.POSIXct(input$sun_end)
       
       sun <- c(start,end)
       return(sun)
@@ -565,8 +565,8 @@ server <- function(input, output) {
     if(input$mon_occ == FALSE){
       return(NA)
     }else{
-      start <- input$mon_start
-      end <- input$mon_end
+      start <- as.POSIXct(input$mon_start)
+      end <- as.POSIXct(input$mon_end)
       
       mon <- c(start,end)
       return(mon)
@@ -577,8 +577,8 @@ server <- function(input, output) {
     if(input$tue_occ == FALSE){
       return(NA)
     }else{
-      start <- input$tue_start
-      end <- input$tue_end
+      start <- as.POSIXct(input$tue_start)
+      end <- as.POSIXct(input$tue_end)
       
       tue <- c(start,end)
       return(tue)
@@ -589,8 +589,8 @@ server <- function(input, output) {
     if(input$wed_occ == FALSE){
       return(NA)
     }else{
-      start <- input$wed_start
-      end <- input$wed_end
+      start <- as.POSIXct(input$wed_start)
+      end <- as.POSIXct(input$wed_end)
       
       wed <- c(start,end)
       return(wed)
@@ -601,8 +601,8 @@ server <- function(input, output) {
     if(input$thu_occ == FALSE){
       return(NA)
     }else{
-      start <- input$thu_start
-      end <- input$thu_end
+      start <- as.POSIXct(input$thu_start)
+      end <- as.POSIXct(input$thu_end)
       
       thu <- c(start,end)
       return(thu)
@@ -613,8 +613,8 @@ server <- function(input, output) {
     if(input$fri_occ == FALSE){
       return(NA)
     }else{
-      start <- input$fri_start
-      end <- input$fri_end
+      start <- as.POSIXct(input$fri_start)
+      end <- as.POSIXct(input$fri_end)
       
       fri <- c(start,end)
       return(fri)
@@ -625,8 +625,8 @@ server <- function(input, output) {
     if(input$sat_occ == FALSE){
       return(NA)
     }else{
-      start <- input$sat_start
-      end <- input$sat_end
+      start <- as.POSIXct(input$sat_start)
+      end <- as.POSIXct(input$sat_end)
       
       sat <- c(start,end)
       return(sat)
@@ -644,23 +644,33 @@ server <- function(input, output) {
     
     monday <- c('mon',mon()[1],mon()[2])
     df[2,] <- monday
+    
+    tuesday <- c('tue',tue()[1],tue()[2])
+    df[3,] <- tuesday
+    
+    wednesday <- c('wed',wed()[1],wed()[2])
+    df[4,] <- wednesday
+    
+    thursday <- c('thu',thu()[1],thu()[2])
+    df[5,] <- thursday
+    
+    friday <- c('fri',fri()[1],fri()[2])
+    df[6,] <- friday
+    
+    saturday <- c('sat',sat()[1],sat()[2])
+    df[7,] <- saturday
+    
     return(df)
   })
-  
-  observeEvent(mon(),{
-    print(occupancy())
-    print(mon()[1])
-    print(mon()[2])
-  })
 
-  # output$occ_csv <- downloadHandler(
-  #   filename = function(){
-  #     paste(input$occ_filename,'.csv',sep='')
-  #   },
-  #   content = function(file){
-  #     write.csv(occupancy(),file,na='NA')
-  #   },
-  #   contentType = 'text/csv')
+  output$occ_csv <- downloadHandler(
+    filename = function(){
+      paste(input$occ_filename,".csv",sep="")
+    },
+    content = function(file){
+      write.csv(occupancy(),file,na='NA')
+    },
+    contentType = "text/csv")
 
 }
 
