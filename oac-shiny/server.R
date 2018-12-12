@@ -472,77 +472,61 @@ server <- function(input, output) {
   
   #disable/enable timeinputs for unoccupied/occupied
   
-  disable('sun_start')
-  disable('sun_end')
+  disable('sun_slider')
   observeEvent(input$sun_occ,{
     if(input$sun_occ == TRUE){
-      enable('sun_start')
-      enable('sun_end')
+      enable('sun_slider')
     }else{
-      disable('sun_start')
-      disable('sun_end')
+      disable('sun_slider')
     }
   })
   
   observeEvent(input$mon_occ,{
     if(input$mon_occ == FALSE){
-      disable('mon_start')
-      disable('mon_end')
+      disable('mon_slider')
     }else{
-      enable('mon_start')
-      enable('mon_end')
+      enable('mon_slider')
     }
   })
 
   observeEvent(input$tue_occ,{
     if(input$tue_occ == FALSE){
-      disable('tue_start')
-      disable('tue_end')
+      disable('tue_slider')
     }else{
-      enable('tue_start')
-      enable('tue_end')
+      enable('tue_slider')
     }
   })
 
   observeEvent(input$wed_occ,{
     if(input$wed_occ == FALSE){
-      disable('wed_start')
-      disable('wed_end')
+      disable('wed_slider')
     }else{
-      enable('wed_start')
-      enable('wed_end')
+      enable('wed_slider')
     }
   })
 
   observeEvent(input$thu_occ,{
     if(input$thu_occ == FALSE){
-      disable('thu_start')
-      disable('thu_end')
+      disable('thu_slider')
     }else{
-      enable('thu_start')
-      enable('thu_end')
+      enable('thu_slider')
     }
   })
 
   observeEvent(input$fri_occ,{
     if(input$fri_occ == FALSE){
-      disable('fri_start')
-      disable('fri_end')
+      disable('fri_slider')
     }else{
-      enable('fri_start')
-      enable('fri_end')
+      enable('fri_slider')
     }
   })
 
-  disable('sat_start')
-  disable('sat_end')
+  disable('sat_slider')
   observeEvent(input$sat_occ,{
     if(input$sat_occ == TRUE){
-      enable('sat_start')
-      enable('sat_end')
+      enable('sat_slider')
     }else{
-      disable('sat_start')
-      disable('sat_end')
+      disable('sat_slider')
     }
   })
   
@@ -550,11 +534,11 @@ server <- function(input, output) {
   #NOTE: inputs sun_start, sun_end etc aree of clas POSIXlt
   sun <- reactive({
     if(input$sun_occ == FALSE){
-      return(NA)
+      return(c('NA','NA'))
     }
     else{
-      start <- as.POSIXct(input$sun_start)
-      end <- as.POSIXct(input$sun_end)
+      start <- strftime(input$sun_slider[1],format='%H:%M')
+      end <- strftime(input$sun_slider[2],format='%H:%M')
       
       sun <- c(start,end)
       return(sun)
@@ -563,22 +547,22 @@ server <- function(input, output) {
   
   mon <- reactive({
     if(input$mon_occ == FALSE){
-      return(NA)
+      return(c('NA','NA'))
     }else{
-      start <- as.POSIXct(input$mon_start)
-      end <- as.POSIXct(input$mon_end)
+      start <- strftime(input$mon_slider[1],format='%H:%M')
+      end <- strftime(input$mon_slider[2],format='%H:%M')
       
       mon <- c(start,end)
       return(mon)
     }
   })
-  
+
   tue <- reactive({
     if(input$tue_occ == FALSE){
-      return(NA)
+      return(c('NA','NA'))
     }else{
-      start <- as.POSIXct(input$tue_start)
-      end <- as.POSIXct(input$tue_end)
+      start <- strftime(input$tue_slider[1],format='%H:%M')
+      end <- strftime(input$tue_slider[2],format='%H:%M')
       
       tue <- c(start,end)
       return(tue)
@@ -587,10 +571,10 @@ server <- function(input, output) {
   
   wed <- reactive({
     if(input$wed_occ == FALSE){
-      return(NA)
+      return(c('NA','NA'))
     }else{
-      start <- as.POSIXct(input$wed_start)
-      end <- as.POSIXct(input$wed_end)
+      start <- strftime(input$wed_slider[1],format='%H:%M')
+      end <- strftime(input$wed_slider[2],format='%H:%M')
       
       wed <- c(start,end)
       return(wed)
@@ -599,10 +583,10 @@ server <- function(input, output) {
   
   thu <- reactive({
     if(input$thu_occ == FALSE){
-      return(NA)
+      return(c('NA','NA'))
     }else{
-      start <- as.POSIXct(input$thu_start)
-      end <- as.POSIXct(input$thu_end)
+      start <- strftime(input$thu_slider[1],format='%H:%M')
+      end <- strftime(input$thu_slider[2],format='%H:%M')
       
       thu <- c(start,end)
       return(thu)
@@ -611,10 +595,10 @@ server <- function(input, output) {
   
   fri <- reactive({
     if(input$fri_occ == FALSE){
-      return(NA)
+      return(c('NA','NA'))
     }else{
-      start <- as.POSIXct(input$fri_start)
-      end <- as.POSIXct(input$fri_end)
+      start <- strftime(input$fri_slider[1],format='%H:%M')
+      end <- strftime(input$fri_slider[2],format='%H:%M')
       
       fri <- c(start,end)
       return(fri)
@@ -623,10 +607,10 @@ server <- function(input, output) {
   
   sat <- reactive({
     if(input$sat_occ == FALSE){
-      return(NA)
+      return(c('NA','NA'))
     }else{
-      start <- as.POSIXct(input$sat_start)
-      end <- as.POSIXct(input$sat_end)
+      start <- strftime(input$sat_slider[1],format='%H:%M')
+      end <- strftime(input$sat_slider[2],format='%H:%M')
       
       sat <- c(start,end)
       return(sat)
@@ -634,7 +618,7 @@ server <- function(input, output) {
   })
   
   #dataframe to write to file
-  occupancy <- reactive({
+  occupancy <- eventReactive(input$update_preview,ignoreNULL=FALSE,{
     df <- data.frame(matrix(ncol = 3, nrow = 7))
     x <- c("day", "start", "end")
     colnames(df) <- x
@@ -660,6 +644,7 @@ server <- function(input, output) {
     saturday <- c('sat',sat()[1],sat()[2])
     df[7,] <- saturday
     
+    print(df)
     return(df)
   })
 
@@ -671,6 +656,12 @@ server <- function(input, output) {
       write.csv(occupancy(),file,na='NA')
     },
     contentType = "text/csv")
-
+  
+  occupancy_readable <- reactive({
+    df <- occupancy()
+  })
+  
+  output$occ_table <- renderDataTable(occupancy())
+  
 }
 
