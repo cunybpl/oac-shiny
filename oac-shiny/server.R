@@ -617,12 +617,23 @@ server <- function(input, output) {
     }
   })
   
+  holidays <- reactiveValues()
+  
+  observeEvent(input$add_holiday,{
+    holiday_name <- input$holiday_name
+    start <- strftime(input$holiday_slider[1],format="%m/%d")
+    end <- strftime(input$holiday_slider[2],format="%m/%d")
+    holiday <- c(holiday_name,start,end)
+    holidays[[holiday_name]] <- holiday
+  })
+  
   #dataframe to write to file
   occupancy <- eventReactive(input$update_preview,ignoreNULL=FALSE,{
     df <- data.frame(matrix(ncol = 3, nrow = 7))
     x <- c("day", "start", "end")
     colnames(df) <- x
     
+    #Standard Week
     sunday <- c('sun',sun()[1],sun()[2])
     df[1,] <- sunday
     
@@ -644,9 +655,36 @@ server <- function(input, output) {
     saturday <- c('sat',sat()[1],sat()[2])
     df[7,] <- saturday
     
-    print(df)
     return(df)
   })
+  
+  occupancy_holiday <- eventReactive(input$update_preview,{
+    df <- occupancy()
+    for(holiday in reactiveValuesToList(holidays)){
+      df <- rbind(df,holiday)
+    }
+    return(df)
+  })
+
+  occupancy_readable <- reactive({
+    if(input$update_preview == 0){
+      df <- occupancy()
+      }
+    else{
+      df <- occupancy_holiday()
+    }
+    return(df)
+  })
+  
+  output$occ_table <- renderDataTable(occupancy_readable())
+  
+  output$holiday_preview <- renderText(paste(
+    'Starting: ',
+    strftime(input$holiday_slider[1],format="%m/%d"),
+    ' Ending ',
+    strftime(input$holiday_slider[2],format="%m/%d")
+  )
+  )
 
   output$occ_csv <- downloadHandler(
     filename = function(){
@@ -656,12 +694,6 @@ server <- function(input, output) {
       write.csv(occupancy(),file,na='NA')
     },
     contentType = "text/csv")
-  
-  occupancy_readable <- reactive({
-    df <- occupancy()
-  })
-  
-  output$occ_table <- renderDataTable(occupancy())
   
 }
 

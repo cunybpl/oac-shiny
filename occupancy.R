@@ -84,18 +84,13 @@ occupancyTab <- tabPanel('Occupancy',
                            verticalLayout(
                              wellPanel(
                                h3("Holidays"),
-                               fluidRow(
-                                 column(2,
-                                        selectInput('holiday_month','Month',
-                                                    choices=c('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','NOV','DEC')
-                                        )
-                                 ),
-                                 column(10,#TODO: Account for Date Validation
-                                        sliderInput('holiday_days','Day(s)',min =1,max=31,value=c(1,1),step=1)
-                                 )
-                               ),
+                               sliderInput(inputId='holiday_slider',label='Add Holidays',
+                                           min= as.POSIXlt("01/01",tz="","%m/%d"),max=as.POSIXlt("12/31",tz="","%m/%d"),
+                                           value=c(as.POSIXlt("12/25",tz="","%m/%d"),as.POSIXlt("12/26",tz="","%m/%d")),
+                                           step=86400,timeFormat="%m/%d"),
+                               textOutput('holiday_preview'),
+                               textInput('holiday_name','Holiday Name',value="Christmas"),
                                actionButton('add_holiday','Add Holiday',width='100%')
-                               
                              ),
                              wellPanel(
                                h3("Schedule Preview"),
