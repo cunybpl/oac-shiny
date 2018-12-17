@@ -32,7 +32,7 @@ library(DT)
 library(shinyjs)
 source("data_prep.R")
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   #Check if individual files are uploaded, used in conditionalPanel UI
   output$datUploaded <- reactive({
@@ -471,62 +471,78 @@ server <- function(input, output) {
   ####----OCCUPANCY----####
   
   #disable/enable timeinputs for unoccupied/occupied
-  
   disable('sun_slider')
+  disable('sun_startup')
   observeEvent(input$sun_occ,{
     if(input$sun_occ == TRUE){
       enable('sun_slider')
+      enable('sun_startup')
     }else{
       disable('sun_slider')
+      disable('sun_startup')
     }
   })
+ 
   
   observeEvent(input$mon_occ,{
     if(input$mon_occ == FALSE){
       disable('mon_slider')
+      disable('mon_startup')
     }else{
       enable('mon_slider')
+      enable('mon_startup')
     }
   })
 
   observeEvent(input$tue_occ,{
     if(input$tue_occ == FALSE){
       disable('tue_slider')
+      disable('tue_startup')
     }else{
       enable('tue_slider')
+      enable('tue_startup')
     }
   })
 
   observeEvent(input$wed_occ,{
     if(input$wed_occ == FALSE){
       disable('wed_slider')
+      disable('wed_startup')
     }else{
       enable('wed_slider')
+      enable('wed_startup')
     }
   })
 
   observeEvent(input$thu_occ,{
     if(input$thu_occ == FALSE){
       disable('thu_slider')
+      disable('thu_startup')
     }else{
       enable('thu_slider')
+      enable('thu_startup')
     }
   })
 
   observeEvent(input$fri_occ,{
     if(input$fri_occ == FALSE){
       disable('fri_slider')
+      disable('fri_startup')
     }else{
       enable('fri_slider')
+      enable('fri_startup')
     }
   })
 
   disable('sat_slider')
+  disable('sat_startup')
   observeEvent(input$sat_occ,{
     if(input$sat_occ == TRUE){
       enable('sat_slider')
+      enable('sat_startup')
     }else{
       disable('sat_slider')
+      disable('sat_startup')
     }
   })
   
@@ -534,158 +550,214 @@ server <- function(input, output) {
   #NOTE: inputs sun_start, sun_end etc aree of clas POSIXlt
   sun <- reactive({
     if(input$sun_occ == FALSE){
-      return(c('NA','NA'))
+      return(c('NA','NA','NA'))
     }
     else{
       start <- strftime(input$sun_slider[1],format='%H:%M')
+      startup <- strftime(input$sun_startup,format='%H:%M')
       end <- strftime(input$sun_slider[2],format='%H:%M')
       
-      sun <- c(start,end)
+      sun <- c(start,startup,end)
       return(sun)
     }
   })
   
+  observeEvent(input$sun_slider,{
+    updateSliderInput(session,'sun_startup',label = 'Sunday Startup Period',
+                      min= input$sun_slider[1],max=input$sun_slider[2],
+                      value= input$sun_slider[1] + 4*STEP)
+  })
+  
   mon <- reactive({
     if(input$mon_occ == FALSE){
-      return(c('NA','NA'))
+      return(c('NA','NA','NA'))
     }else{
       start <- strftime(input$mon_slider[1],format='%H:%M')
+      startup <- strftime(input$mon_startup,format='%H:%M')
       end <- strftime(input$mon_slider[2],format='%H:%M')
       
-      mon <- c(start,end)
+      mon <- c(start,startup,end)
       return(mon)
     }
+  })
+  
+  observeEvent(input$mon_slider,{
+    updateSliderInput(session,'mon_startup',label = 'Monday Startup Period',
+                      min= input$mon_slider[1],max=input$mon_slider[2],
+                      value= input$mon_slider[1] + 4*STEP)
   })
 
   tue <- reactive({
     if(input$tue_occ == FALSE){
-      return(c('NA','NA'))
+      return(c('NA','NA','NA'))
     }else{
       start <- strftime(input$tue_slider[1],format='%H:%M')
+      startup <- strftime(input$tue_startup,format='%H:%M')
       end <- strftime(input$tue_slider[2],format='%H:%M')
       
-      tue <- c(start,end)
+      tue <- c(start,startup,end)
       return(tue)
     }
   })
   
+  observeEvent(input$tue_slider,{
+    updateSliderInput(session,'tue_startup',label = 'Tuesday Startup Period',
+                      min= input$tue_slider[1],max=input$tue_slider[2],
+                      value= input$tue_slider[1] + 4*STEP)
+  })
+  
   wed <- reactive({
     if(input$wed_occ == FALSE){
-      return(c('NA','NA'))
+      return(c('NA','NA','NA'))
     }else{
       start <- strftime(input$wed_slider[1],format='%H:%M')
+      startup <- strftime(input$wed_startup,format='%H:%M')
       end <- strftime(input$wed_slider[2],format='%H:%M')
       
-      wed <- c(start,end)
+      wed <- c(start,startup,end)
       return(wed)
     }
   })
   
+  observeEvent(input$wed_slider,{
+    updateSliderInput(session,'wed_startup',label = 'Wednesday Startup Period',
+                      min= input$wed_slider[1],max=input$wed_slider[2],
+                      value= input$wed_slider[1] + 4*STEP)
+  })
+  
   thu <- reactive({
     if(input$thu_occ == FALSE){
-      return(c('NA','NA'))
+      return(c('NA','NA','NA'))
     }else{
       start <- strftime(input$thu_slider[1],format='%H:%M')
+      startup <- strftime(input$thu_startup,format='%H:%M')
       end <- strftime(input$thu_slider[2],format='%H:%M')
       
-      thu <- c(start,end)
+      thu <- c(start,startup,end)
       return(thu)
     }
   })
   
+  observeEvent(input$thu_slider,{
+    updateSliderInput(session,'thu_startup',label = 'Thursday Startup Period',
+                      min= input$thu_slider[1],max=input$thu_slider[2],
+                      value= input$thu_slider[1] + 4*STEP)
+  })
+  
   fri <- reactive({
     if(input$fri_occ == FALSE){
-      return(c('NA','NA'))
+      return(c('NA','NA','NA'))
     }else{
       start <- strftime(input$fri_slider[1],format='%H:%M')
+      startup <- strftime(input$fri_startup,format='%H:%M')
       end <- strftime(input$fri_slider[2],format='%H:%M')
       
-      fri <- c(start,end)
+      fri <- c(start,startup,end)
       return(fri)
     }
   })
   
+  observeEvent(input$fri_slider,{
+    updateSliderInput(session,'fri_startup',label = 'Friday Startup Period',
+                      min= input$fri_slider[1],max=input$fri_slider[2],
+                      value= input$fri_slider[1] + 4*STEP)
+  })
+  
   sat <- reactive({
     if(input$sat_occ == FALSE){
-      return(c('NA','NA'))
+      return(c('NA','NA','NA'))
     }else{
       start <- strftime(input$sat_slider[1],format='%H:%M')
+      startup <- strftime(input$sat_startup,format='%H:%M')
       end <- strftime(input$sat_slider[2],format='%H:%M')
       
-      sat <- c(start,end)
+      sat <- c(start,startup,end)
       return(sat)
     }
   })
   
-  holidays <- reactiveValues()
-  
-  observeEvent(input$add_holiday,{
-    holiday_name <- input$holiday_name
-    start <- strftime(input$holiday_slider[1],format="%m/%d")
-    end <- strftime(input$holiday_slider[2],format="%m/%d")
-    holiday <- c(holiday_name,start,end)
-    holidays[[holiday_name]] <- holiday
+  observeEvent(input$sat_slider,{
+    updateSliderInput(session,'sat_startup',label = 'Saturday Startup Period',
+                      min= input$sat_slider[1],max=input$sat_slider[2],
+                      value= input$sat_slider[1] + 4*STEP)
   })
   
   #dataframe to write to file
   occupancy <- eventReactive(input$update_preview,ignoreNULL=FALSE,{
-    df <- data.frame(matrix(ncol = 3, nrow = 7))
-    x <- c("day", "start", "end")
+    df <- data.frame(matrix(ncol = 4, nrow = 7))
+    x <- c("day", "start","startup_end", "end")
     colnames(df) <- x
     
     #Standard Week
-    sunday <- c('sun',sun()[1],sun()[2])
+    sunday <- c('sun',sun()[1],sun()[2],sun()[3])
     df[1,] <- sunday
     
-    monday <- c('mon',mon()[1],mon()[2])
+    monday <- c('mon',mon()[1],mon()[2],mon()[3])
     df[2,] <- monday
     
-    tuesday <- c('tue',tue()[1],tue()[2])
+    tuesday <- c('tue',tue()[1],tue()[2],tue()[3])
     df[3,] <- tuesday
     
-    wednesday <- c('wed',wed()[1],wed()[2])
+    wednesday <- c('wed',wed()[1],wed()[2],wed()[3])
     df[4,] <- wednesday
     
-    thursday <- c('thu',thu()[1],thu()[2])
+    thursday <- c('thu',thu()[1],thu()[2],thu()[3])
     df[5,] <- thursday
     
-    friday <- c('fri',fri()[1],fri()[2])
+    friday <- c('fri',fri()[1],fri()[2],fri()[3])
     df[6,] <- friday
     
-    saturday <- c('sat',sat()[1],sat()[2])
+    saturday <- c('sat',sat()[1],sat()[2],sat()[3])
     df[7,] <- saturday
     
     return(df)
   })
   
-  occupancy_holiday <- eventReactive(input$update_preview,{
-    df <- occupancy()
-    for(holiday in reactiveValuesToList(holidays)){
-      df <- rbind(df,holiday)
-    }
-    return(df)
-  })
-
-  occupancy_readable <- reactive({
-    if(input$update_preview == 0){
-      df <- occupancy()
-      }
-    else{
-      df <- occupancy_holiday()
-    }
-    return(df)
-  })
+  output$occ_table <- renderDataTable(occupancy())
   
-  output$occ_table <- renderDataTable(occupancy_readable())
+  #holidays <- reactiveValues()
+  # 
+  # observeEvent(input$add_holiday,{
+  #   holiday_name <- input$holiday_name
+  #   start <- strftime(input$holiday_slider[1],format="%m/%d")
+  #   end <- strftime(input$holiday_slider[2],format="%m/%d")
+  #   holiday <- c(holiday_name,start,end)
+  #   holidays[[holiday_name]] <- holiday
+  # })
   
-  output$holiday_preview <- renderText(paste(
-    'Starting: ',
-    strftime(input$holiday_slider[1],format="%m/%d"),
-    ' Ending ',
-    strftime(input$holiday_slider[2],format="%m/%d")
-  )
-  )
+  #   holiday_df <- eventReactive(,{
+  #   df <- data.frame()
+  #   
+  #   for(holiday in reactiveValuesToList(holidays)){
+  #     df <- rbind(df,holiday)#TODO: order by date?
+  #   }
+  #   return(df)
+  # })
 
+  # occupancy_readable <- reactive({
+  #   if(input$update_preview == 0){
+  #     df <- occupancy()
+  #     }
+  #   else{
+  #     df <- occupancy_holiday()
+  #   }
+  #   return(df)
+  # })
+  # 
+  # output$holiday_table <- renderDataTable(holiday_df())
+  
+  
+  # output$holiday_preview <- renderText(paste(
+  #   'Starting: ',
+  #   strftime(input$holiday_slider[1],format="%m/%d"),
+  #   ' Ending ',
+  #   strftime(input$holiday_slider[2],format="%m/%d")
+  # )
+  # )
+  
+  observe({
+    toggleState('occ_csv',condition=input$occ_filename != "" | is.null(input$occ_filename))
+})
   output$occ_csv <- downloadHandler(
     filename = function(){
       paste(input$occ_filename,".csv",sep="")

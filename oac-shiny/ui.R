@@ -11,7 +11,7 @@ library(plotly)
 library(DT)
 library(shinyjs)
 source("data_prep.R")
-source("../occupancy.R")
+source("../occupancy_ui.R")
 
 ui <- navbarPage(title='noBAS OAC',selected='Plotting',
   useShinyjs(),
