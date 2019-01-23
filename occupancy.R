@@ -1,7 +1,6 @@
 #UI for Occupancy Scheduling in a tabPanel
 
 library(shiny)
-library(shinyTime)
 library(DT)
 
 DAY_START_DEFAULT = strptime('09:00', format = '%H:%M')
