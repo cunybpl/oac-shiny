@@ -159,7 +159,7 @@ occupancyTab <- tabPanel('Occupancy',
                              ),
                              wellPanel(
                                h3("Download"),
-                               textInput('occ_filename','Filename',placeholder='occupancy_schedule'),
+                               textInput('occ_filename','Filename',value='occupancy_schedule'),
                                downloadButton('occ_csv',label='Download Occupancy CSV',width='100%')
                              )
                              

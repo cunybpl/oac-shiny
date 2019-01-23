@@ -190,3 +190,8 @@ fix_fan_endpoints <- function(fan_data, date_range){
   #return fan_data with insertted endpoint values
   return(fan_data)
 }
+
+#return a layout object of occupancy rectangles to add to main plot
+occupancy_rects <- function(schedule,date_range,ymax,ymin){
+  
+}
