@@ -553,161 +553,168 @@ server <- function(input, output, session) {
       return(c('NA','NA','NA'))
     }
     else{
-      start <- strftime(input$sun_slider[1],format='%H:%M')
-      startup <- strftime(input$sun_startup,format='%H:%M')
-      end <- strftime(input$sun_slider[2],format='%H:%M')
+      startup_start <- strftime(input$sun_startup[1],format='%H:%M',tz=TZ)
+      startup_end <- strftime(input$sun_startup[2],format='%H:%M',tz=TZ)
+      start <- strftime(input$sun_slider[1],format='%H:%M',tz=TZ)
+      end <- strftime(input$sun_slider[2],format='%H:%M',tz=TZ)
       
-      sun <- c(start,startup,end)
+      sun <- c(startup_start,startup_end,start,end)
       return(sun)
     }
   })
   
   observeEvent(input$sun_slider,{
     updateSliderInput(session,'sun_startup',label = 'Sunday Startup Period',
-                      min= input$sun_slider[1],max=input$sun_slider[2],
-                      value= input$sun_slider[1] + 4*STEP)
+                      max=input$sun_slider[1],
+                      value= c(input$sun_slider[1] - 4*STEP,input$sun_slider[1]))
   })
   
   mon <- reactive({
     if(input$mon_occ == FALSE){
       return(c('NA','NA','NA'))
     }else{
-      start <- strftime(input$mon_slider[1],format='%H:%M')
-      startup <- strftime(input$mon_startup,format='%H:%M')
-      end <- strftime(input$mon_slider[2],format='%H:%M')
+      startup_start <- strftime(input$mon_startup[1],format='%H:%M',tz=TZ)
+      startup_end <- strftime(input$mon_startup[2],format='%H:%M',tz=TZ)
+      start <- strftime(input$mon_slider[1],format='%H:%M',tz=TZ)
+      end <- strftime(input$mon_slider[2],format='%H:%M',tz=TZ)
       
-      mon <- c(start,startup,end)
+      mon <- c(startup_start,startup_end,start,end)
       return(mon)
     }
   })
   
   observeEvent(input$mon_slider,{
     updateSliderInput(session,'mon_startup',label = 'Monday Startup Period',
-                      min= input$mon_slider[1],max=input$mon_slider[2],
-                      value= input$mon_slider[1] + 4*STEP)
+                      max=input$mon_slider[1],
+                      value= c(input$mon_slider[1] - 4*STEP,input$mon_slider[1]))
   })
 
   tue <- reactive({
     if(input$tue_occ == FALSE){
       return(c('NA','NA','NA'))
     }else{
-      start <- strftime(input$tue_slider[1],format='%H:%M')
-      startup <- strftime(input$tue_startup,format='%H:%M')
-      end <- strftime(input$tue_slider[2],format='%H:%M')
+      startup_start <- strftime(input$tue_startup[1],format='%H:%M',tz=TZ)
+      startup_end <- strftime(input$tue_startup[2],format='%H:%M',tz=TZ)
+      start <- strftime(input$tue_slider[1],format='%H:%M',tz=TZ)
+      end <- strftime(input$tue_slider[2],format='%H:%M',tz=TZ)
       
-      tue <- c(start,startup,end)
+      tue <- c(startup_start,startup_end,start,end)
       return(tue)
     }
   })
   
   observeEvent(input$tue_slider,{
     updateSliderInput(session,'tue_startup',label = 'Tuesday Startup Period',
-                      min= input$tue_slider[1],max=input$tue_slider[2],
-                      value= input$tue_slider[1] + 4*STEP)
+                      max=input$tue_slider[1],
+                      value= c(input$tue_slider[1] - 4*STEP,input$tue_slider[1]))
   })
   
   wed <- reactive({
     if(input$wed_occ == FALSE){
       return(c('NA','NA','NA'))
     }else{
-      start <- strftime(input$wed_slider[1],format='%H:%M')
-      startup <- strftime(input$wed_startup,format='%H:%M')
-      end <- strftime(input$wed_slider[2],format='%H:%M')
+      startup_start <- strftime(input$wed_startup[1],format='%H:%M',tz=TZ)
+      startup_end <- strftime(input$wed_startup[2],format='%H:%M',tz=TZ)
+      start <- strftime(input$wed_slider[1],format='%H:%M',tz=TZ)
+      end <- strftime(input$wed_slider[2],format='%H:%M',tz=TZ)
       
-      wed <- c(start,startup,end)
+      wed <- c(startup_start,startup_end,start,end)
       return(wed)
     }
   })
   
   observeEvent(input$wed_slider,{
     updateSliderInput(session,'wed_startup',label = 'Wednesday Startup Period',
-                      min= input$wed_slider[1],max=input$wed_slider[2],
-                      value= input$wed_slider[1] + 4*STEP)
+                      max=input$wed_slider[1],
+                      value= c(input$wed_slider[1] - 4*STEP,input$wed_slider[1]))
   })
   
   thu <- reactive({
     if(input$thu_occ == FALSE){
       return(c('NA','NA','NA'))
     }else{
-      start <- strftime(input$thu_slider[1],format='%H:%M')
-      startup <- strftime(input$thu_startup,format='%H:%M')
-      end <- strftime(input$thu_slider[2],format='%H:%M')
+      startup_start <- strftime(input$thu_startup[1],format='%H:%M',tz=TZ)
+      startup_end <- strftime(input$thu_startup[2],format='%H:%M',tz=TZ)
+      start <- strftime(input$thu_slider[1],format='%H:%M',tz=TZ)
+      end <- strftime(input$thu_slider[2],format='%H:%M',tz=TZ)
       
-      thu <- c(start,startup,end)
+      thu <- c(startup_start,startup_end,start,end)
       return(thu)
     }
   })
   
   observeEvent(input$thu_slider,{
     updateSliderInput(session,'thu_startup',label = 'Thursday Startup Period',
-                      min= input$thu_slider[1],max=input$thu_slider[2],
-                      value= input$thu_slider[1] + 4*STEP)
+                      max=input$thu_slider[1],
+                      value= c(input$thu_slider[1] - 4*STEP,input$thu_slider[1]))
   })
   
   fri <- reactive({
     if(input$fri_occ == FALSE){
       return(c('NA','NA','NA'))
     }else{
-      start <- strftime(input$fri_slider[1],format='%H:%M')
-      startup <- strftime(input$fri_startup,format='%H:%M')
-      end <- strftime(input$fri_slider[2],format='%H:%M')
+      startup_start <- strftime(input$fri_startup[1],format='%H:%M',tz=TZ)
+      startup_end <- strftime(input$fri_startup[2],format='%H:%M',tz=TZ)
+      start <- strftime(input$fri_slider[1],format='%H:%M',tz=TZ)
+      end <- strftime(input$fri_slider[2],format='%H:%M',tz=TZ)
       
-      fri <- c(start,startup,end)
+      fri <- c(startup_start,startup_end,start,end)
       return(fri)
     }
   })
   
   observeEvent(input$fri_slider,{
     updateSliderInput(session,'fri_startup',label = 'Friday Startup Period',
-                      min= input$fri_slider[1],max=input$fri_slider[2],
-                      value= input$fri_slider[1] + 4*STEP)
+                      max=input$fri_slider[1],
+                      value= c(input$fri_slider[1] - 4*STEP,input$fri_slider[1]))
   })
   
   sat <- reactive({
     if(input$sat_occ == FALSE){
       return(c('NA','NA','NA'))
     }else{
-      start <- strftime(input$sat_slider[1],format='%H:%M')
-      startup <- strftime(input$sat_startup,format='%H:%M')
-      end <- strftime(input$sat_slider[2],format='%H:%M')
+      startup_start <- strftime(input$sat_startup[1],format='%H:%M',tz=TZ)
+      startup_end <- strftime(input$sat_startup[2],format='%H:%M',tz=TZ)
+      start <- strftime(input$sat_slider[1],format='%H:%M',tz=TZ)
+      end <- strftime(input$sat_slider[2],format='%H:%M',tz=TZ)
       
-      sat <- c(start,startup,end)
+      sat <- c(startup_start,startup_end,start,end)
       return(sat)
     }
   })
   
   observeEvent(input$sat_slider,{
     updateSliderInput(session,'sat_startup',label = 'Saturday Startup Period',
-                      min= input$sat_slider[1],max=input$sat_slider[2],
-                      value= input$sat_slider[1] + 4*STEP)
+                      max=input$sat_slider[1],
+                      value= c(input$sat_slider[1] - 4*STEP,input$sat_slider[1]))
   })
   
   #dataframe to write to file
   occupancy <- eventReactive(input$update_preview,ignoreNULL=FALSE,{
-    df <- data.frame(matrix(ncol = 4, nrow = 7))
-    x <- c("day", "start","startup_end", "end")
+    df <- data.frame(matrix(ncol = 5, nrow = 7))
+    x <- c("day","startup_start",'startup_end','occupied_start','occupied_end')
     colnames(df) <- x
     
     #Standard Week
-    sunday <- c('sun',sun()[1],sun()[2],sun()[3])
+    sunday <- c('sun',sun()[1],sun()[2],sun()[3],sun()[4])
     df[1,] <- sunday
     
-    monday <- c('mon',mon()[1],mon()[2],mon()[3])
+    monday <- c('mon',mon()[1],mon()[2],mon()[3],mon()[4])
     df[2,] <- monday
     
-    tuesday <- c('tue',tue()[1],tue()[2],tue()[3])
+    tuesday <- c('tue',tue()[1],tue()[2],tue()[3],tue()[4])
     df[3,] <- tuesday
     
-    wednesday <- c('wed',wed()[1],wed()[2],wed()[3])
+    wednesday <- c('wed',wed()[1],wed()[2],wed()[3],wed()[4])
     df[4,] <- wednesday
     
-    thursday <- c('thu',thu()[1],thu()[2],thu()[3])
+    thursday <- c('thu',thu()[1],thu()[2],thu()[3],thu()[4])
     df[5,] <- thursday
     
-    friday <- c('fri',fri()[1],fri()[2],fri()[3])
+    friday <- c('fri',fri()[1],fri()[2],fri()[3],fri()[4])
     df[6,] <- friday
     
-    saturday <- c('sat',sat()[1],sat()[2],sat()[3])
+    saturday <- c('sat',sat()[1],sat()[2],sat()[3],sat()[4])
     df[7,] <- saturday
     
     return(df)

@@ -1,32 +1,37 @@
 #UI for Occupancy Scheduling in a tabPanel
 
 library(shiny)
-library(shinyTime)
 library(DT)
 
-DAY_MIN <- as.POSIXlt("00:00",tz="","%H:%M")
-DAY_MAX <- as.POSIXlt("23:59",tz="","%H:%M")
-DAY_START = as.POSIXlt("09:00",tz="","%H:%M")
-DAY_END = as.POSIXlt("17:00",tz="","%H:%M")
+TZ='UTC' #avoid timezone errors
+DAY_MIN <- as.POSIXlt("00:00",tz=TZ,"%H:%M")
+DAY_MAX <- as.POSIXlt("23:59",tz=TZ,"%H:%M")
+DAY_START <- as.POSIXlt("09:00",tz=TZ,"%H:%M")
+DAY_END <- as.POSIXlt("17:00",tz=TZ,"%H:%M")
 STEP <- 900 #15 minutes
+
 
 occupancyTab <- tabPanel('Occupancy',
                          splitLayout(
                            verticalLayout(
                              wellPanel(                  
                                fluidRow(
-                                 column(2,checkboxInput(inputId = 'sun_occ',label = 'occupied',value=FALSE)),
+                                 column(2,checkboxInput(inputId = 'sun_occ',label = 'occupied',value=TRUE)),
                                  column(10,sliderInput(inputId='sun_slider',label='Sunday Occupied Hours',
                                                        min= DAY_MIN,max=DAY_MAX,
                                                        value=c(DAY_START,DAY_END),
-                                                       step=STEP*2,timeFormat="%H:%M"))
+                                                       step=STEP*2,
+                                                       timeFormat="%H:%M",
+                                                       timezone=TZ))
                                ),
                                fluidRow(
                                  column(10,
                                         sliderInput(inputId='sun_startup',label='Sunday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= DAY_START + 4*STEP,
-                                                    step=STEP,timeFormat="%H:%M")
+                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
                                         ,offset = 2)
                                )
                              ),
@@ -37,14 +42,18 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,sliderInput(inputId='mon_slider',label='Monday Occupied Hours',
                                                        min= DAY_MIN,max=DAY_MAX,
                                                        value=c(DAY_START,DAY_END),
-                                                       step=STEP*2,timeFormat="%H:%M"))
+                                                       step=STEP*2,
+                                                       timeFormat="%H:%M",
+                                                       timezone=TZ))
                                ),
                                fluidRow(
                                  column(10,
                                         sliderInput(inputId='mon_startup',label='Monday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= DAY_START + 4*STEP,
-                                                    step=STEP,timeFormat="%H:%M")
+                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
                                         ,offset = 2)
                                )
                              ),
@@ -55,14 +64,18 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,sliderInput(inputId='tue_slider',label='Tuesday Occupied Hours',
                                                        min= DAY_MIN,max=DAY_MAX,
                                                        value=c(DAY_START,DAY_END),
-                                                       step=STEP*2,timeFormat="%H:%M"))
+                                                       step=STEP*2,
+                                                       timeFormat="%H:%M",
+                                                       timezone=TZ))
                                ),
                                fluidRow(
                                  column(10,
                                         sliderInput(inputId='tue_startup',label='Tuesday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= DAY_START + 4*STEP,
-                                                    step=STEP,timeFormat="%H:%M")
+                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
                                         ,offset = 2)
                                )
                              ),
@@ -73,14 +86,18 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,sliderInput(inputId='wed_slider',label='Wednesday Occupied Hours',
                                                        min= DAY_MIN,max=DAY_MAX,
                                                        value=c(DAY_START,DAY_END),
-                                                       step=STEP*2,timeFormat="%H:%M"))
+                                                       step=STEP*2,
+                                                       timeFormat="%H:%M",
+                                                       timezone=TZ))
                                ),
                                fluidRow(
                                  column(10,
                                         sliderInput(inputId='wed_startup',label='Wednesday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= DAY_START + 4*STEP,
-                                                    step=STEP,timeFormat="%H:%M")
+                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
                                         ,offset = 2)
                                )
                              ),
@@ -91,14 +108,18 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,sliderInput(inputId='thu_slider',label='Thursday Occupied Hours',
                                                        min= DAY_MIN,max=DAY_MAX,
                                                        value=c(DAY_START,DAY_END),
-                                                       step=STEP*2,timeFormat="%H:%M"))
+                                                       step=STEP*2,
+                                                       timeFormat="%H:%M",
+                                                       timezone=TZ))
                                ),
                                fluidRow(
                                  column(10,
                                         sliderInput(inputId='thu_startup',label='Thursday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= DAY_START + 4*STEP,
-                                                    step=STEP,timeFormat="%H:%M")
+                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
                                         ,offset = 2)
                                )
                              ),
@@ -109,32 +130,40 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,sliderInput(inputId='fri_slider',label='Friday Occupied Hours',
                                                        min= DAY_MIN,max=DAY_MAX,
                                                        value=c(DAY_START,DAY_END),
-                                                       step=STEP*2,timeFormat="%H:%M"))
+                                                       step=STEP*2,
+                                                       timeFormat="%H:%M",
+                                                       timezone=TZ))
                                ),
                                fluidRow(
                                  column(10,
                                         sliderInput(inputId='fri_startup',label='Friday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= DAY_START + 4*STEP,
-                                                    step=STEP,timeFormat="%H:%M")
+                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
                                         ,offset = 2)
                                )
                              ),
                              
                              wellPanel(
                                fluidRow(
-                                 column(2,checkboxInput(inputId = 'sat_occ',label = 'occupied',value=FALSE)),
+                                 column(2,checkboxInput(inputId = 'sat_occ',label = 'occupied',value=TRUE)),
                                  column(10,sliderInput(inputId='sat_slider',label='Saturday Occupied Hours',
                                                        min= DAY_MIN,max=DAY_MAX,
                                                        value=c(DAY_START,DAY_END),
-                                                       step=STEP*2,timeFormat="%H:%M"))
+                                                       step=STEP*2,
+                                                       timeFormat="%H:%M",
+                                                       timezone=TZ))
                                ),
                                fluidRow(
                                  column(10,
                                         sliderInput(inputId='sat_startup',label='Saturday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= DAY_START + 4*STEP,
-                                                    step=STEP,timeFormat="%H:%M")
+                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
                                         ,offset = 2)
                                )
                              )

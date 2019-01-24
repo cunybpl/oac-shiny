@@ -21,8 +21,8 @@ trace_0 <- rnorm(100, mean = 90)
 trace_1 <- rnorm(100, mean = 80)
 trace_2 <- rnorm(100, mean = 70)
 
-dstart <- ymd('2019-01-01',tz='')
-dend <- ymd('2019-01-31',tz='')
+dstart <- ymd('2019-01-01',tz='EST')
+dend <- ymd('2019-01-31',tz='EST')
 
 x <- seq.POSIXt(from=dstart,to=dend,length.out=100)
 
@@ -32,8 +32,8 @@ data <- data.frame(x, trace_0, trace_1, trace_2)
 #example rectangles
 r1 <- list(
   type = 'rect',
-  x0 = ymd('2019-01-01',tz=''),
-  x1 = ymd('2019-01-05',tz=''),
+  x0 = ymd('2019-01-01',tz='EST'),
+  x1 = ymd('2019-01-05',tz='EST'),
   y0 = 0,
   y1 = 1,
   xref = 'x',
@@ -44,8 +44,8 @@ r1 <- list(
 
 r2 <- list(
   type = 'rect',
-  x0 = ymd('2019-01-07',tz=''),
-  x1 = ymd('2019-01-12',tz=''),
+  x0 = ymd('2019-01-07',tz='EST'),
+  x1 = ymd('2019-01-12',tz='EST'),
   y0 = 0,
   y1 = 1,
   xref = 'x',
