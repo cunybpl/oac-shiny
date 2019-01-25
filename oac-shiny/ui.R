@@ -4,6 +4,7 @@
 #UI
 
 library(shiny)
+library(shinythemes)
 library(xts)
 library(reshape)
 library(lubridate)
@@ -11,9 +12,12 @@ library(plotly)
 library(DT)
 library(shinyjs)
 source("data_prep.R")
-source("../occupancy_ui.R")
+source("occupancy_ui.R")
 
-ui <- navbarPage(title='noBAS OAC',selected='Plotting',
+PAGE_TITLE <- 'NO-BAS OAC'
+
+ui <- 
+  navbarPage(theme=shinytheme('yeti'),title="NOBAS OAC",selected='Plotting',
   useShinyjs(),
   
   tabPanel('Plotting',
@@ -117,13 +121,13 @@ ui <- navbarPage(title='noBAS OAC',selected='Plotting',
                            checkboxInput("fan_statusCheckbox", label = "FAN", value = TRUE)
                        ),
                        br(),br(),br(),
+                       textInput('plot_title','Plot Title',value='Outside Air Control',placeholder='Your Plot Title Here'),
                        
                        actionButton("update_plot2", label = "Update Plot!", width = 800),
                        checkboxInput("showTable", label = "Display Data Table", value = FALSE)
       ),
       br(),
-      dataTableOutput("table"),
-      dataTableOutput("occ_test_table")
+      dataTableOutput("table")
     )
   ),
   

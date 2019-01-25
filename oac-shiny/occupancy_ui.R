@@ -182,15 +182,16 @@ occupancyTab <- tabPanel('Occupancy',
                              #   dataTableOutput('holiday_table')
                              # ),
                              wellPanel(
-                               h3("Schedule Preview"),
-                               dataTableOutput('occ_table'),
-                               actionButton('update_preview','Update Preview',width='100%')
-                             ),
-                             wellPanel(
                                h3("Download"),
                                textInput('occ_filename','Filename',value='occupancy_schedule'),
                                downloadButton('occ_csv',label='Download Occupancy CSV',width='100%')
+                             ),
+                             wellPanel(
+                               h3("Schedule Preview"),
+                               dataTableOutput('occ_table'),
+                               actionButton('update_preview','Update Preview',width='100%')
                              )
+                             
                              
                            )
                          )

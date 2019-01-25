@@ -82,15 +82,15 @@ server <- function(input, output, session) {
   })
   outputOptions(output,'show_Plot_Options',suspendWhenHidden=FALSE)
   
-  output$start_instructions <- renderUI({
-    str1 <- paste('TO GET STARTED:')
-    str2 <-  paste('1. In the Left Panel, click browse under the trend (DAT, MAT, etc.) you wish to upload')
-    str3 <- paste('2. In the popup window, find the .csv file that corresponds to your trend')
-    str4 <- paste('3. Repeat 1-2 for as many trends as you wish')
-    str5 <- paste('4. Click Update Plot to display the Plot of your uploaded data')
-    
-    h4(HTML(paste(str1,str2,str3,str4,str5, sep = '<br/>')))
-  })
+  # output$start_instructions <- renderUI({
+  #   str1 <- paste('TO GET STARTED:')
+  #   str2 <-  paste('1. In the Left Panel, click browse under the trend (DAT, MAT, etc.) you wish to upload')
+  #   str3 <- paste('2. In the popup window, find the .csv file that corresponds to your trend')
+  #   str4 <- paste('3. Repeat 1-2 for as many trends as you wish')
+  #   str5 <- paste('4. Click Update Plot to display the Plot of your uploaded data')
+  #   
+  #   h4(HTML(paste(str1,str2,str3,str4,str5, sep = '<br/>')))
+  # })
   
   url <- a("HELP: INSTRUCTIONS", href="https://docs.google.com/document/d/e/2PACX-1vSqYcgS51UgN6R32jMq1mfZteSTSWqYPOwzM8wJE9ael5R6SjuC2N-fK-I26-bOpOZtDRL8L7ibM7ku/pub",target="_blank")
   output$help_link <- renderUI({
@@ -396,33 +396,47 @@ server <- function(input, output, session) {
   output$table <- renderDataTable(if(input$showTable){tableVal()})
   
   # #OCCUPANCY
+  disable('occFile')
+  observeEvent(dataUploaded(),{
+    if(dataUploaded() == TRUE){enable('occFile')}
+  })
+  
+  
+  
   occData <- reactive({
     if(!is.null(input$occFile)){
       d1 <- input$occFile$datapath
       d1<-read.csv(d1,na.strings='NA')
       colnames(d1) <- c("ind","day","startup_start","startup_end","occ_start","occ_end")
-      return(d1)
+      
+      #check for empty schedule
+      if(is.na(d1[1,3]) && is.na(d1[2,3]) && is.na(d1[3,3]) && is.na(d1[4,3]) && is.na(d1[5,3]) && is.na(d1[6,3]) && is.na(d1[7,3])){
+        return(NA)
+      }
+      
+      else{
+        return(d1)
+      }
+      
     }
     else{
       return (NA)
     }
   })
 
-  output$occ_test_table <- renderDataTable(if(!is.na(occData())){
-    occData()
-  })
 
   occRects <- eventReactive(occData(),{
     if(is.na(occData())){
       return(NA)
     }
     else{
-      df <- data.frame(dates=seq.POSIXt(from=dt_range()[1],to=dt_range()[2],by="day"))
+      df <- data.frame(dates=seq.POSIXt(from=input$date_range[1],to=input$date_range[2],by="day"))
       df$wday <- weekdays(df$dates)
       
       startup_rects <- list()
       occ_rects <- list()
-      df
+      
+      
       
       for(row in 1:nrow(df)){
         date <- substr(df[row,'dates'],1,10)
@@ -639,7 +653,27 @@ server <- function(input, output, session) {
   names(trend_colors) <- c('DAT','MAT','OAT','RAT','fan_status')
   
   #PLOT
+  
   plotVal <- eventReactive(updatePlot(),{
+    #Left y-axis (temperature)
+    y <- list(
+      title = "Temperature"
+    )
+    
+    #x-axis (time)
+    x <- list(
+      nticks = 50,
+      tickangle = -90
+    )
+    
+    #Right y-axis (fan_status)
+    ay <- list(
+      tickfont = list(color = "red"),
+      overlaying = "y",
+      side = "right",
+      title = "Fan Status"
+    )
+    
     if(dataUploaded()){
       df <- isolate(Data_in_dateRange())
       
@@ -649,21 +683,10 @@ server <- function(input, output, session) {
       #gets available trace names (dat,mat etc.)
       cols <- colnames(df)[-1]
       
-      #Left y-axis (temperature)
-      y <- list(
-        title = "Temperature"
-      )
       
-      #Right y-axis (fan_status)
-      ay <- list(
-        tickfont = list(color = "red"),
-        overlaying = "y",
-        side = "right",
-        title = "Fan Status"
-      )
       
       #Empty plotly
-      plt <- plot_ly() %>% layout(title = 'Outside Air Control', yaxis = y)
+      plt <- plot_ly() %>% layout(title = input$plot_title, yaxis = y, xaxis = x)
       
       #add available traces to plt
       for(trace in cols){
@@ -700,10 +723,9 @@ server <- function(input, output, session) {
       plt
     }
     else{
-      return (NULL)
+      return (plot_ly() %>% layout(title = 'Outside Air Control', yaxis = y, xaxis = x))
     }
-  })
-  
+  },ignoreNULL = FALSE)
   output$plot <- renderPlotly(plotVal())
   
   ####----OCCUPANCY----####
@@ -927,8 +949,10 @@ server <- function(input, output, session) {
                       value= c(input$sat_slider[1] - 4*STEP,input$sat_slider[1]))
   })
   
+  
+  
   #dataframe to write to file
-  occupancy <- eventReactive(input$update_preview,ignoreNULL=FALSE,{
+  occupancy_preview <- eventReactive(input$update_preview,ignoreNULL=FALSE,{
     df <- data.frame(matrix(ncol = 5, nrow = 7))
     x <- c("day","startup_start",'startup_end','occupied_start','occupied_end')
     colnames(df) <- x
@@ -958,7 +982,37 @@ server <- function(input, output, session) {
     return(df)
   })
   
-  output$occ_table <- renderDataTable(occupancy())
+  occupancy <- reactive({
+    df <- data.frame(matrix(ncol = 5, nrow = 7))
+    x <- c("day","startup_start",'startup_end','occupied_start','occupied_end')
+    colnames(df) <- x
+    
+    #Standard Week
+    sunday <- c('sun',sun()[1],sun()[2],sun()[3],sun()[4])
+    df[1,] <- sunday
+    
+    monday <- c('mon',mon()[1],mon()[2],mon()[3],mon()[4])
+    df[2,] <- monday
+    
+    tuesday <- c('tue',tue()[1],tue()[2],tue()[3],tue()[4])
+    df[3,] <- tuesday
+    
+    wednesday <- c('wed',wed()[1],wed()[2],wed()[3],wed()[4])
+    df[4,] <- wednesday
+    
+    thursday <- c('thu',thu()[1],thu()[2],thu()[3],thu()[4])
+    df[5,] <- thursday
+    
+    friday <- c('fri',fri()[1],fri()[2],fri()[3],fri()[4])
+    df[6,] <- friday
+    
+    saturday <- c('sat',sat()[1],sat()[2],sat()[3],sat()[4])
+    df[7,] <- saturday
+    
+    return(df)
+  })
+  
+  output$occ_table <- renderDataTable(occupancy_preview())
   
   #holidays <- reactiveValues()
   # 
