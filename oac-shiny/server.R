@@ -395,6 +395,240 @@ server <- function(input, output, session) {
   
   output$table <- renderDataTable(if(input$showTable){tableVal()})
   
+  # #OCCUPANCY
+  occData <- reactive({
+    if(!is.null(input$occFile)){
+      d1 <- input$occFile$datapath
+      d1<-read.csv(d1,na.strings='NA')
+      colnames(d1) <- c("ind","day","startup_start","startup_end","occ_start","occ_end")
+      return(d1)
+    }
+    else{
+      return (NA)
+    }
+  })
+
+  output$occ_test_table <- renderDataTable(if(!is.na(occData())){
+    occData()
+  })
+
+  occRects <- eventReactive(occData(),{
+    if(is.na(occData())){
+      return(NA)
+    }
+    else{
+      df <- data.frame(dates=seq.POSIXt(from=dt_range()[1],to=dt_range()[2],by="day"))
+      df$wday <- weekdays(df$dates)
+      
+      startup_rects <- list()
+      occ_rects <- list()
+      df
+      
+      for(row in 1:nrow(df)){
+        date <- substr(df[row,'dates'],1,10)
+        
+        wday <- df[row,'wday']
+        
+        if(wday == 'Sunday' && !is.na(occData()[1,3])){
+          startup_rect <- list(
+            type = 'rect',
+            x0 = ymd_hm(paste(date,occData()[1,3]),tz='UTC'),
+            x1 = ymd_hm(paste(date,occData()[1,4]),tz='UTC'),
+            y0 = 0,
+            y1 = 1,
+            xref = 'x',
+            yref = 'paper',
+            fillcolor = 'yellow'
+            ,opacity = 0.2
+          )
+          occ_rect <- list(
+            type = 'rect',
+            x0 = ymd_hm(paste(date,occData()[1,5]),tz='UTC'),
+            x1 = ymd_hm(paste(date,occData()[1,6]),tz='UTC'),
+            y0 = 0,
+            y1 = 1,
+            xref = 'x',
+            yref = 'paper',
+            fillcolor = 'gray'
+            ,opacity = 0.2
+          )
+          startup_rects[[row]] <- startup_rect
+          occ_rects[[row]] <- occ_rect
+        }
+        
+          else if(wday == 'Monday' && !is.na(occData()[2,3])){
+            startup_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[2,3]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[2,4]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'yellow'
+              ,opacity = 0.2
+            )
+            occ_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[2,5]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[2,6]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'gray'
+              ,opacity = 0.2
+            )
+            startup_rects[[row]] <- startup_rect
+            occ_rects[[row]] <- occ_rect
+          }
+        
+        
+          else if(wday == 'Tuesday' && !is.na(occData()[3,3])){
+            startup_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[3,3]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[3,4]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'yellow'
+              ,opacity = 0.2
+            )
+            occ_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[3,5]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[3,6]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'gray'
+              ,opacity = 0.2
+            )
+            startup_rects[[row]] <- startup_rect
+            occ_rects[[row]] <- occ_rect
+          }
+        
+        
+          else if(wday == 'Wednesday' && !is.na(occData()[4,3])){
+            startup_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[4,3]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[4,4]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'yellow'
+              ,opacity = 0.2
+            )
+            occ_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[4,5]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[4,6]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'gray'
+              ,opacity = 0.2
+            )
+            startup_rects[[row]] <- startup_rect
+            occ_rects[[row]] <- occ_rect
+          }
+        
+        
+          else if(wday == 'Thursday' && !is.na(occData()[5,3])){
+            startup_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[5,3]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[5,4]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'yellow'
+              ,opacity = 0.2
+            )
+            occ_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[5,5]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[5,6]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'gray'
+              ,opacity = 0.2
+            )
+            startup_rects[[row]] <- startup_rect
+            occ_rects[[row]] <- occ_rect
+          }
+        
+        
+          else if(wday == 'Friday' && !is.na(occData()[6,3])){
+            startup_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[6,3]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[6,4]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'yellow'
+              ,opacity = 0.2
+            )
+            occ_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[6,5]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[6,6]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'gray'
+              ,opacity = 0.2
+            )
+            startup_rects[[row]] <- startup_rect
+            occ_rects[[row]] <- occ_rect
+          }
+        
+        
+          else if(wday == 'Saturday' && !is.na(occData()[7,3])){
+            startup_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[7,3]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[7,4]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'yellow'
+              ,opacity = 0.2
+            )
+            occ_rect <- list(
+              type = 'rect',
+              x0 = ymd_hm(paste(date,occData()[7,5]),tz='UTC'),
+              x1 = ymd_hm(paste(date,occData()[7,6]),tz='UTC'),
+              y0 = 0,
+              y1 = 1,
+              xref = 'x',
+              yref = 'paper',
+              fillcolor = 'gray'
+              ,opacity = 0.2
+            )
+            startup_rects[[row]] <- startup_rect
+            occ_rects[[row]] <- occ_rect
+          }
+        
+      }
+      all_rects <- c(startup_rects,occ_rects)
+      return(all_rects)
+    }
+  })
+  
   #line colors
   trend_colors <- vector(mode = 'list', length = 5)
   trend_colors[1] <- 'red'
@@ -458,6 +692,10 @@ server <- function(input, output, session) {
             
           }
         }
+      }
+      
+      if(!is.na(occRects())){
+        plt <- plt %>% layout(shapes=occRects())
       }
       plt
     }

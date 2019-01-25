@@ -73,6 +73,12 @@ ui <- navbarPage(title='noBAS OAC',selected='Plotting',
                       "text/comma-separated-values,text/plain",
                       ".csv")
           ),
+          fileInput("occFile", "Choose CSV File for Occupancy Schedule",
+                    accept = c(
+                      "text/csv",
+                      "text/comma-separated-values,text/plain",
+                      ".csv")
+          ),
           # conditionalPanel(condition = "output.fanUploaded",
           #                  checkboxInput("fan_statusCheckbox", label = "Display Fan Status.", value = TRUE)
           # ),
@@ -116,7 +122,8 @@ ui <- navbarPage(title='noBAS OAC',selected='Plotting',
                        checkboxInput("showTable", label = "Display Data Table", value = FALSE)
       ),
       br(),
-      dataTableOutput("table")
+      dataTableOutput("table"),
+      dataTableOutput("occ_test_table")
     )
   ),
   
