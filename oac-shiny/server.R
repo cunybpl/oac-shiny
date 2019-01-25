@@ -430,7 +430,7 @@ server <- function(input, output, session) {
       return(NA)
     }
     else{
-      df <- data.frame(dates=seq.POSIXt(from=input$date_range[1],to=input$date_range[2],by="day"))
+      df <- data.frame(dates=seq.POSIXt(from=dt_range()[1],to=dt_range()[2],by="day"))
       df$wday <- weekdays(df$dates)
       
       startup_rects <- list()
@@ -674,6 +674,15 @@ server <- function(input, output, session) {
       title = "Fan Status"
     )
     
+    logo <- list(
+      source = 'bpl-logo.png',
+      opacity=1,
+      layer='below',
+      sizing='contain',
+      xref="paper", yref="paper"
+      
+    )
+    
     if(dataUploaded()){
       df <- isolate(Data_in_dateRange())
       
@@ -723,7 +732,7 @@ server <- function(input, output, session) {
       plt
     }
     else{
-      return (plot_ly() %>% layout(title = 'Outside Air Control', yaxis = y, xaxis = x))
+      return (plot_ly() %>% layout(title = 'Outside Air Control', yaxis = y, xaxis = x,images=logo))
     }
   },ignoreNULL = FALSE)
   output$plot <- renderPlotly(plotVal())
