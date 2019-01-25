@@ -60,7 +60,20 @@ rects <- list(r1,r2)
 p <- plot_ly(data=data, x = ~x) %>%
   add_trace(y = ~trace_0, name = 'trace 0',type = 'scatter',mode = 'lines') %>%
   add_trace(y = ~trace_1, name = 'trace 1',type = 'scatter', mode = 'lines') %>%
-  add_trace(y = ~trace_2, name = 'trace 2',type = 'scatter', mode = 'lines') %>% layout(shapes=rects)
+  add_trace(y = ~trace_2, name = 'trace 2',type = 'scatter', mode = 'lines') %>% layout(shapes=rects,images = list(
+    list(source =  "https://raw.githubusercontent.com/cunybpl/oac-shiny/occupancy/bpl-logo.png?raw=true",
+         xref = "paper",
+         yref = "paper",
+         x = 0,
+         y = 1,
+         sizex = 1,
+         sizey = 1,
+         sizing = "contain",
+         opacity = 0.3,
+         layer = "below"
+    )
+  ))
+p
 
 heading <- list("day","startup_start","startup_end","occupied_start","occupied_end")
 sun <- list("sun","00:00","00:30","01:00","23:59")

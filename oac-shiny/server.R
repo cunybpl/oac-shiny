@@ -92,7 +92,7 @@ server <- function(input, output, session) {
   #   h4(HTML(paste(str1,str2,str3,str4,str5, sep = '<br/>')))
   # })
   
-  url <- a("HELP: INSTRUCTIONS", href="https://docs.google.com/document/d/e/2PACX-1vSqYcgS51UgN6R32jMq1mfZteSTSWqYPOwzM8wJE9ael5R6SjuC2N-fK-I26-bOpOZtDRL8L7ibM7ku/pub",target="_blank")
+  url <- a("HELP", href="https://docs.google.com/document/d/e/2PACX-1vSqYcgS51UgN6R32jMq1mfZteSTSWqYPOwzM8wJE9ael5R6SjuC2N-fK-I26-bOpOZtDRL8L7ibM7ku/pub",target="_blank")
   output$help_link <- renderUI({
     tagList(h4(url))
   })
@@ -401,6 +401,10 @@ server <- function(input, output, session) {
     if(dataUploaded() == TRUE){enable('occFile')}
   })
   
+  disable('fanFile')
+  observeEvent(dataUploaded(),{
+    if(dataUploaded() == TRUE){enable('fanFile')}
+  })
   
   
   occData <- reactive({
@@ -675,11 +679,20 @@ server <- function(input, output, session) {
     )
     
     logo <- list(
-      source = 'bpl-logo.png',
-      opacity=1,
-      layer='below',
-      sizing='contain',
-      xref="paper", yref="paper"
+      list(source =  "https://raw.githubusercontent.com/cunybpl/oac-shiny/occupancy/bpl-logo.png?raw=true",
+           xref = "paper",
+           yref = "paper",
+           x = 0,
+           y = 1,
+           sizex = 1,
+           sizey = 1,
+           sizing = "contain",
+           opacity = 0.3,
+           layer = "below"
+      )
+    )
+    
+    leg <- list(
       
     )
     
@@ -732,7 +745,7 @@ server <- function(input, output, session) {
       plt
     }
     else{
-      return (plot_ly() %>% layout(title = 'Outside Air Control', yaxis = y, xaxis = x,images=logo))
+      return (plot_ly() %>% layout(title = 'Outside Air Control', yaxis = y, xaxis = x) %>% layout(images=logo))
     }
   },ignoreNULL = FALSE)
   output$plot <- renderPlotly(plotVal())

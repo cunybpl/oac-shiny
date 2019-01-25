@@ -71,13 +71,13 @@ ui <-
           # ),
           
           #Fan Status file input
-          fileInput("fanFile", "Choose CSV File for Fan Status",
+          fileInput("fanFile", "Choose CSV File for Fan Status (At Least 1 Temperature Trend Required First)",
                     accept = c(
                       "text/csv",
                       "text/comma-separated-values,text/plain",
                       ".csv")
           ),
-          fileInput("occFile", "Choose CSV File for Occupancy Schedule",
+          fileInput("occFile", "Choose CSV File for Occupancy Schedule (At Least 1 Temperature Trend Required First)",
                     accept = c(
                       "text/csv",
                       "text/comma-separated-values,text/plain",
