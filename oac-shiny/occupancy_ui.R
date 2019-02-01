@@ -17,14 +17,6 @@ occupancyTab <- tabPanel('Occupancy',
                              wellPanel(                  
                                fluidRow(
                                  column(2,checkboxInput(inputId = 'sun_occ',label = 'occupied',value=TRUE)),
-                                 column(10,sliderInput(inputId='sun_slider',label='Sunday Occupied Hours',
-                                                       min= DAY_MIN,max=DAY_MAX,
-                                                       value=c(DAY_START,DAY_END),
-                                                       step=STEP,
-                                                       timeFormat="%H:%M",
-                                                       timezone=TZ))
-                               ),
-                               fluidRow(
                                  column(10,
                                         sliderInput(inputId='sun_startup',label='Sunday Startup Period',
                                                     min=DAY_MIN,max=DAY_MAX,
@@ -32,6 +24,17 @@ occupancyTab <- tabPanel('Occupancy',
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
+                                        )
+                               ),
+                               fluidRow(
+                                 column(10,
+                                        sliderInput(inputId='sun_slider',label='Sunday Occupied Hours',
+                                                    min= DAY_MIN,max=DAY_MAX,
+                                                    value=c(DAY_START,DAY_END),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
+                                        
                                         ,offset = 2)
                                )
                              ),
@@ -39,14 +42,6 @@ occupancyTab <- tabPanel('Occupancy',
                              wellPanel(
                                fluidRow(
                                  column(2,checkboxInput(inputId = 'mon_occ',label = 'occupied',value=TRUE)),
-                                 column(10,sliderInput(inputId='mon_slider',label='Monday Occupied Hours',
-                                                       min= DAY_MIN,max=DAY_MAX,
-                                                       value=c(DAY_START,DAY_END),
-                                                       step=STEP,
-                                                       timeFormat="%H:%M",
-                                                       timezone=TZ))
-                               ),
-                               fluidRow(
                                  column(10,
                                         sliderInput(inputId='mon_startup',label='Monday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
@@ -54,6 +49,17 @@ occupancyTab <- tabPanel('Occupancy',
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
+                                        )
+                               ),
+                               fluidRow(
+                                 column(10,
+                                        sliderInput(inputId='mon_slider',label='Monday Occupied Hours',
+                                                    min= DAY_MIN,max=DAY_MAX,
+                                                    value=c(DAY_START,DAY_END),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
+                                        
                                         ,offset = 2)
                                )
                              ),
@@ -61,14 +67,6 @@ occupancyTab <- tabPanel('Occupancy',
                              wellPanel(
                                fluidRow(
                                  column(2,checkboxInput(inputId = 'tue_occ',label = 'occupied',value=TRUE)),
-                                 column(10,sliderInput(inputId='tue_slider',label='Tuesday Occupied Hours',
-                                                       min= DAY_MIN,max=DAY_MAX,
-                                                       value=c(DAY_START,DAY_END),
-                                                       step=STEP,
-                                                       timeFormat="%H:%M",
-                                                       timezone=TZ))
-                               ),
-                               fluidRow(
                                  column(10,
                                         sliderInput(inputId='tue_startup',label='Tuesday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
@@ -76,6 +74,17 @@ occupancyTab <- tabPanel('Occupancy',
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
+                                        )
+                               ),
+                               fluidRow(
+                                 column(10,
+                                        sliderInput(inputId='tue_slider',label='Tuesday Occupied Hours',
+                                                    min= DAY_MIN,max=DAY_MAX,
+                                                    value=c(DAY_START,DAY_END),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
+                                        
                                         ,offset = 2)
                                )
                              ),
@@ -83,14 +92,6 @@ occupancyTab <- tabPanel('Occupancy',
                              wellPanel(
                                fluidRow(
                                  column(2,checkboxInput(inputId = 'wed_occ',label = 'occupied',value=TRUE)),
-                                 column(10,sliderInput(inputId='wed_slider',label='Wednesday Occupied Hours',
-                                                       min= DAY_MIN,max=DAY_MAX,
-                                                       value=c(DAY_START,DAY_END),
-                                                       step=STEP,
-                                                       timeFormat="%H:%M",
-                                                       timezone=TZ))
-                               ),
-                               fluidRow(
                                  column(10,
                                         sliderInput(inputId='wed_startup',label='Wednesday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
@@ -98,6 +99,17 @@ occupancyTab <- tabPanel('Occupancy',
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
+                                        )
+                               ),
+                               fluidRow(
+                                 column(10,
+                                        sliderInput(inputId='wed_slider',label='Wednesday Occupied Hours',
+                                                    min= DAY_MIN,max=DAY_MAX,
+                                                    value=c(DAY_START,DAY_END),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
+                                        
                                         ,offset = 2)
                                )
                              ),
@@ -105,14 +117,6 @@ occupancyTab <- tabPanel('Occupancy',
                              wellPanel(
                                fluidRow(
                                  column(2,checkboxInput(inputId = 'thu_occ',label = 'occupied',value=TRUE)),
-                                 column(10,sliderInput(inputId='thu_slider',label='Thursday Occupied Hours',
-                                                       min= DAY_MIN,max=DAY_MAX,
-                                                       value=c(DAY_START,DAY_END),
-                                                       step=STEP,
-                                                       timeFormat="%H:%M",
-                                                       timezone=TZ))
-                               ),
-                               fluidRow(
                                  column(10,
                                         sliderInput(inputId='thu_startup',label='Thursday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
@@ -120,6 +124,17 @@ occupancyTab <- tabPanel('Occupancy',
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
+                                        )
+                               ),
+                               fluidRow(
+                                 column(10,
+                                        sliderInput(inputId='thu_slider',label='Thursday Occupied Hours',
+                                                    min= DAY_MIN,max=DAY_MAX,
+                                                    value=c(DAY_START,DAY_END),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
+                                        
                                         ,offset = 2)
                                )
                              ),
@@ -127,14 +142,6 @@ occupancyTab <- tabPanel('Occupancy',
                              wellPanel(
                                fluidRow(
                                  column(2,checkboxInput(inputId = 'fri_occ',label = 'occupied',value=TRUE)),
-                                 column(10,sliderInput(inputId='fri_slider',label='Friday Occupied Hours',
-                                                       min= DAY_MIN,max=DAY_MAX,
-                                                       value=c(DAY_START,DAY_END),
-                                                       step=STEP,
-                                                       timeFormat="%H:%M",
-                                                       timezone=TZ))
-                               ),
-                               fluidRow(
                                  column(10,
                                         sliderInput(inputId='fri_startup',label='Friday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
@@ -142,6 +149,17 @@ occupancyTab <- tabPanel('Occupancy',
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
+                                        )
+                               ),
+                               fluidRow(
+                                 column(10,
+                                        sliderInput(inputId='fri_slider',label='Friday Occupied Hours',
+                                                    min= DAY_MIN,max=DAY_MAX,
+                                                    value=c(DAY_START,DAY_END),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
+                                        
                                         ,offset = 2)
                                )
                              ),
@@ -149,14 +167,6 @@ occupancyTab <- tabPanel('Occupancy',
                              wellPanel(
                                fluidRow(
                                  column(2,checkboxInput(inputId = 'sat_occ',label = 'occupied',value=TRUE)),
-                                 column(10,sliderInput(inputId='sat_slider',label='Saturday Occupied Hours',
-                                                       min= DAY_MIN,max=DAY_MAX,
-                                                       value=c(DAY_START,DAY_END),
-                                                       step=STEP,
-                                                       timeFormat="%H:%M",
-                                                       timezone=TZ))
-                               ),
-                               fluidRow(
                                  column(10,
                                         sliderInput(inputId='sat_startup',label='Saturday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
@@ -164,6 +174,17 @@ occupancyTab <- tabPanel('Occupancy',
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
+                                        )
+                               ),
+                               fluidRow(
+                                 column(10,
+                                        sliderInput(inputId='sat_slider',label='Saturday Occupied Hours',
+                                                    min= DAY_MIN,max=DAY_MAX,
+                                                    value=c(DAY_START,DAY_END),
+                                                    step=STEP,
+                                                    timeFormat="%H:%M",
+                                                    timezone=TZ)
+                                        
                                         ,offset = 2)
                                )
                              )

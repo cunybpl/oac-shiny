@@ -457,7 +457,8 @@ server <- function(input, output, session) {
             xref = 'x',
             yref = 'paper',
             fillcolor = 'yellow'
-            ,opacity = 0.2
+            ,opacity = 0.5,
+            layer='below'
           )
           occ_rect <- list(
             type = 'rect',
@@ -467,8 +468,9 @@ server <- function(input, output, session) {
             y1 = 1,
             xref = 'x',
             yref = 'paper',
-            fillcolor = 'gray'
-            ,opacity = 0.2
+            fillcolor = '#fff'
+            ,opacity = 1.0,
+            layer='below'
           )
           startup_rects[[row]] <- startup_rect
           occ_rects[[row]] <- occ_rect
@@ -484,7 +486,8 @@ server <- function(input, output, session) {
               xref = 'x',
               yref = 'paper',
               fillcolor = 'yellow'
-              ,opacity = 0.2
+              ,opacity = 0.5,
+              layer='below'
             )
             occ_rect <- list(
               type = 'rect',
@@ -494,8 +497,9 @@ server <- function(input, output, session) {
               y1 = 1,
               xref = 'x',
               yref = 'paper',
-              fillcolor = 'gray'
-              ,opacity = 0.2
+              fillcolor = '#fff'
+              ,opacity = 1.0,
+              layer='below'
             )
             startup_rects[[row]] <- startup_rect
             occ_rects[[row]] <- occ_rect
@@ -512,7 +516,8 @@ server <- function(input, output, session) {
               xref = 'x',
               yref = 'paper',
               fillcolor = 'yellow'
-              ,opacity = 0.2
+              ,opacity = 0.5,
+              layer='below'
             )
             occ_rect <- list(
               type = 'rect',
@@ -522,8 +527,9 @@ server <- function(input, output, session) {
               y1 = 1,
               xref = 'x',
               yref = 'paper',
-              fillcolor = 'gray'
-              ,opacity = 0.2
+              fillcolor = '#fff'
+              ,opacity = 1.0,
+              layer='below'
             )
             startup_rects[[row]] <- startup_rect
             occ_rects[[row]] <- occ_rect
@@ -540,7 +546,8 @@ server <- function(input, output, session) {
               xref = 'x',
               yref = 'paper',
               fillcolor = 'yellow'
-              ,opacity = 0.2
+              ,opacity = 0.5,
+              layer='below'
             )
             occ_rect <- list(
               type = 'rect',
@@ -550,8 +557,9 @@ server <- function(input, output, session) {
               y1 = 1,
               xref = 'x',
               yref = 'paper',
-              fillcolor = 'gray'
-              ,opacity = 0.2
+              fillcolor = '#fff'
+              ,opacity = 1.0,
+              layer='below'
             )
             startup_rects[[row]] <- startup_rect
             occ_rects[[row]] <- occ_rect
@@ -568,7 +576,8 @@ server <- function(input, output, session) {
               xref = 'x',
               yref = 'paper',
               fillcolor = 'yellow'
-              ,opacity = 0.2
+              ,opacity = 0.5,
+              layer='below'
             )
             occ_rect <- list(
               type = 'rect',
@@ -578,8 +587,9 @@ server <- function(input, output, session) {
               y1 = 1,
               xref = 'x',
               yref = 'paper',
-              fillcolor = 'gray'
-              ,opacity = 0.2
+              fillcolor = '#fff'
+              ,opacity = 1.0,
+              layer='below'
             )
             startup_rects[[row]] <- startup_rect
             occ_rects[[row]] <- occ_rect
@@ -596,7 +606,8 @@ server <- function(input, output, session) {
               xref = 'x',
               yref = 'paper',
               fillcolor = 'yellow'
-              ,opacity = 0.2
+              ,opacity = 0.5,
+              layer='below'
             )
             occ_rect <- list(
               type = 'rect',
@@ -606,8 +617,9 @@ server <- function(input, output, session) {
               y1 = 1,
               xref = 'x',
               yref = 'paper',
-              fillcolor = 'gray'
-              ,opacity = 0.2
+              fillcolor = '#fff'
+              ,opacity = 1.0,
+              layer='below'
             )
             startup_rects[[row]] <- startup_rect
             occ_rects[[row]] <- occ_rect
@@ -624,7 +636,8 @@ server <- function(input, output, session) {
               xref = 'x',
               yref = 'paper',
               fillcolor = 'yellow'
-              ,opacity = 0.2
+              ,opacity = 0.5,
+              layer='below'
             )
             occ_rect <- list(
               type = 'rect',
@@ -634,8 +647,9 @@ server <- function(input, output, session) {
               y1 = 1,
               xref = 'x',
               yref = 'paper',
-              fillcolor = 'gray'
-              ,opacity = 0.2
+              fillcolor = '#fff'
+              ,opacity = 1.0,
+              layer='below'
             )
             startup_rects[[row]] <- startup_rect
             occ_rects[[row]] <- occ_rect
@@ -740,12 +754,12 @@ server <- function(input, output, session) {
       }
       
       if(!is.na(occRects())){
-        plt <- plt %>% layout(shapes=occRects())
+        plt <- plt %>% layout(plot_bgcolor="#d7d2d2",shapes=occRects())
       }
       plt
     }
     else{
-      return (plot_ly(type='scatter',mode='lines') %>% layout(title = 'Outside Air Control', yaxis = y, xaxis = x) %>% layout(images=logo))
+      return (plot_ly(type='scatter',mode='lines') %>% layout(title = 'Outside Air Control', yaxis = y, xaxis = x,images=logo))
     }
   },ignoreNULL = FALSE)
   output$plot <- renderPlotly(plotVal())
