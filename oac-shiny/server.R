@@ -745,7 +745,7 @@ server <- function(input, output, session) {
       plt
     }
     else{
-      return (plot_ly() %>% layout(title = 'Outside Air Control', yaxis = y, xaxis = x) %>% layout(images=logo))
+      return (plot_ly(type='scatter',mode='lines') %>% layout(title = 'Outside Air Control', yaxis = y, xaxis = x) %>% layout(images=logo))
     }
   },ignoreNULL = FALSE)
   output$plot <- renderPlotly(plotVal())
@@ -753,15 +753,13 @@ server <- function(input, output, session) {
   ####----OCCUPANCY----####
   
   #disable/enable timeinputs for unoccupied/occupied
-  disable('sun_slider')
-  disable('sun_startup')
   observeEvent(input$sun_occ,{
-    if(input$sun_occ == TRUE){
-      enable('sun_slider')
-      enable('sun_startup')
-    }else{
+    if(input$sun_occ == FALSE){
       disable('sun_slider')
       disable('sun_startup')
+    }else{
+      enable('sun_slider')
+      enable('sun_startup')
     }
   })
  
@@ -816,15 +814,13 @@ server <- function(input, output, session) {
     }
   })
 
-  disable('sat_slider')
-  disable('sat_startup')
   observeEvent(input$sat_occ,{
-    if(input$sat_occ == TRUE){
-      enable('sat_slider')
-      enable('sat_startup')
-    }else{
+    if(input$sat_occ == FALSE){
       disable('sat_slider')
       disable('sat_startup')
+    }else{
+      enable('sat_slider')
+      enable('sat_startup')
     }
   })
   
@@ -845,10 +841,10 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$sun_slider,{
-    updateSliderInput(session,'sun_startup',label = 'Sunday Startup Period',
-                      max=input$sun_slider[1],
-                      value= c(input$sun_slider[1] - 4*STEP,input$sun_slider[1]))
+  observeEvent(input$sun_startup,{
+    updateSliderInput(session,'sun_slider',label = 'Sunday Occupied Hours',
+                      min=input$sun_startup[2],
+                      value= c(input$sun_startup[2],input$sun_startup[2]+32*STEP))
   })
   
   mon <- reactive({
@@ -865,12 +861,11 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$mon_slider,{
-    updateSliderInput(session,'mon_startup',label = 'Monday Startup Period',
-                      max=input$mon_slider[1],
-                      value= c(input$mon_slider[1] - 4*STEP,input$mon_slider[1]))
+  observeEvent(input$mon_startup,{
+    updateSliderInput(session,'mon_slider',label = 'Monday Occupied Hours',
+                      min=input$mon_startup[2],
+                      value= c(input$mon_startup[2],input$mon_startup[2]+32*STEP))
   })
-
   tue <- reactive({
     if(input$tue_occ == FALSE){
       return(c('NA','NA','NA'))
@@ -885,10 +880,10 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$tue_slider,{
-    updateSliderInput(session,'tue_startup',label = 'Tuesday Startup Period',
-                      max=input$tue_slider[1],
-                      value= c(input$tue_slider[1] - 4*STEP,input$tue_slider[1]))
+  observeEvent(input$tue_startup,{
+    updateSliderInput(session,'tue_slider',label = 'Tuesday Occupied Hours',
+                      min=input$tue_startup[2],
+                      value= c(input$tue_startup[2],input$tue_startup[2]+32*STEP))
   })
   
   wed <- reactive({
@@ -905,10 +900,10 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$wed_slider,{
-    updateSliderInput(session,'wed_startup',label = 'Wednesday Startup Period',
-                      max=input$wed_slider[1],
-                      value= c(input$wed_slider[1] - 4*STEP,input$wed_slider[1]))
+  observeEvent(input$wed_startup,{
+    updateSliderInput(session,'wed_slider',label = 'Wednesday Occupied Hours',
+                      min=input$wed_startup[2],
+                      value= c(input$wed_startup[2],input$wed_startup[2]+32*STEP))
   })
   
   thu <- reactive({
@@ -925,10 +920,10 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$thu_slider,{
-    updateSliderInput(session,'thu_startup',label = 'Thursday Startup Period',
-                      max=input$thu_slider[1],
-                      value= c(input$thu_slider[1] - 4*STEP,input$thu_slider[1]))
+  observeEvent(input$thu_startup,{
+    updateSliderInput(session,'thu_slider',label = 'Thursday Occupied Hours',
+                      min=input$thu_startup[2],
+                      value= c(input$thu_startup[2],input$thu_startup[2]+32*STEP))
   })
   
   fri <- reactive({
@@ -945,10 +940,10 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$fri_slider,{
-    updateSliderInput(session,'fri_startup',label = 'Friday Startup Period',
-                      max=input$fri_slider[1],
-                      value= c(input$fri_slider[1] - 4*STEP,input$fri_slider[1]))
+  observeEvent(input$fri_startup,{
+    updateSliderInput(session,'fri_slider',label = 'Friday Occupied Hours',
+                      min=input$fri_startup[2],
+                      value= c(input$fri_startup[2],input$fri_startup[2]+32*STEP))
   })
   
   sat <- reactive({
@@ -965,10 +960,10 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$sat_slider,{
-    updateSliderInput(session,'sat_startup',label = 'Saturday Startup Period',
-                      max=input$sat_slider[1],
-                      value= c(input$sat_slider[1] - 4*STEP,input$sat_slider[1]))
+  observeEvent(input$sat_startup,{
+    updateSliderInput(session,'sat_slider',label = 'Saturday Occupied Hours',
+                      min=input$sat_startup[2],
+                      value= c(input$sat_startup[2],input$sat_startup[2]+32*STEP))
   })
   
   
