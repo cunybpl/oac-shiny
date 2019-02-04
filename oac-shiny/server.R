@@ -981,9 +981,16 @@ server <- function(input, output, session) {
   })
   
   
+  #Flag for when download_button pressed
+  rv <- reactiveValues(download_flag = 0)
   
   #dataframe to write to file
-  occupancy_preview <- eventReactive(input$update_preview,ignoreNULL=FALSE,{
+  occupancy_preview <- eventReactive(
+    {
+      input$update_preview
+      rv$download_flag
+    }
+    ,ignoreNULL=FALSE,{
     df <- data.frame(matrix(ncol = 5, nrow = 7))
     x <- c("day","startup_start",'startup_end','occupied_start','occupied_end')
     colnames(df) <- x
@@ -1094,8 +1101,10 @@ server <- function(input, output, session) {
     },
     content = function(file){
       write.csv(occupancy(),file,na='NA')
+      
+      #update occupancy_preview
+      rv$download_flag <- rv$download_flag + 1
     },
     contentType = "text/csv")
-  
 }
 
