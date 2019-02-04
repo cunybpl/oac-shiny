@@ -388,13 +388,6 @@ server <- function(input, output, session) {
     #TODO:
   })
   
-  #TABLE
-  tableVal<- eventReactive(updatePlot(),{
-    fortify(Data_in_dateRange())
-  })
-  
-  output$table <- renderDataTable(if(input$showTable){tableVal()})
-  
   # #OCCUPANCY
   disable('occFile')
   observeEvent(dataUploaded(),{
@@ -1050,7 +1043,7 @@ server <- function(input, output, session) {
     return(df)
   })
   
-  output$occ_table <- renderDataTable(occupancy_preview())
+  output$occ_table <- renderDataTable(occupancy_preview(),options=list(bLengthChange=F))
   
   #holidays <- reactiveValues()
   # 

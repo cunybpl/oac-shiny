@@ -20,6 +20,11 @@ ui <-
   navbarPage(theme=shinytheme('yeti'),title="NOBAS OAC",selected='Plotting',
   useShinyjs(),
   
+  #Surpress Search Bar in DataTable
+  tags$head(
+    tags$style(type="text/css", ".dataTables_filter {display: none;    }"
+    )),
+  
   tabPanel('Plotting',
     sidebarPanel(
       div(id = "noBAS Visualization",
@@ -123,11 +128,9 @@ ui <-
                        br(),br(),br(),
                        textInput('plot_title','Plot Title',value='Outside Air Control',placeholder='Your Plot Title Here'),
                        
-                       actionButton("update_plot2", label = "Update Plot!", width = 800),
-                       checkboxInput("showTable", label = "Display Data Table", value = FALSE)
+                       actionButton("update_plot2", label = "Update Plot!", width = 800)
       ),
-      br(),
-      dataTableOutput("table")
+      br()
     )
   ),
   
