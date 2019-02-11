@@ -8,6 +8,7 @@ DAY_MIN <- as.POSIXlt("00:00",tz=TZ,"%H:%M")
 DAY_MAX <- as.POSIXlt("23:59",tz=TZ,"%H:%M")
 DAY_START <- as.POSIXlt("09:00",tz=TZ,"%H:%M")
 DAY_END <- as.POSIXlt("17:00",tz=TZ,"%H:%M")
+STARTUP_START <- as.POSIXlt("7:00",tz=TZ,"%H:%M")
 STEP <- 900 #15 minutes
 
 
@@ -20,7 +21,7 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,
                                         sliderInput(inputId='sun_startup',label='Sunday Startup Period',
                                                     min=DAY_MIN,max=DAY_MAX,
-                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
@@ -45,7 +46,7 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,
                                         sliderInput(inputId='mon_startup',label='Monday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
@@ -70,7 +71,7 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,
                                         sliderInput(inputId='tue_startup',label='Tuesday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
@@ -95,7 +96,7 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,
                                         sliderInput(inputId='wed_startup',label='Wednesday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
@@ -120,7 +121,7 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,
                                         sliderInput(inputId='thu_startup',label='Thursday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
@@ -145,7 +146,7 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,
                                         sliderInput(inputId='fri_startup',label='Friday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)
@@ -170,7 +171,7 @@ occupancyTab <- tabPanel('Occupancy',
                                  column(10,
                                         sliderInput(inputId='sat_startup',label='Saturday Startup Period',
                                                     min= DAY_MIN,max=DAY_MAX,
-                                                    value= c(DAY_START - 4*STEP,DAY_START),
+                                                    value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
                                                     timeFormat="%H:%M",
                                                     timezone=TZ)

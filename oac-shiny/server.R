@@ -831,6 +831,99 @@ server <- function(input, output, session) {
     }
   })
   
+  #Slider Behavior
+  
+  sun_startup_end <- reactive({input$sun_startup[2]})
+  sun_occ_start <- reactive({input$sun_slider[1]})
+  
+  observeEvent(sun_startup_end(),{
+    diff <- time_diff(input$sun_slider[1],input$sun_slider[2]) * -1
+    updateSliderInput(session,'sun_slider',value=c(sun_startup_end(),sun_startup_end() + diff))
+  })
+  
+  observeEvent(sun_occ_start(),{
+    diff <- time_diff(input$sun_startup[1],input$sun_startup[2])
+    updateSliderInput(session,'sun_startup',value=c(sun_occ_start() + diff, sun_occ_start()))
+  })
+  
+  mon_startup_end <- reactive({input$mon_startup[2]})
+  mon_occ_start <- reactive({input$mon_slider[1]})
+  
+  observeEvent(mon_startup_end(),{
+    diff <- time_diff(input$mon_slider[1],input$mon_slider[2]) * -1
+    updateSliderInput(session,'mon_slider',value=c(mon_startup_end(),mon_startup_end() + diff))
+  })
+  
+  observeEvent(mon_occ_start(),{
+    diff <- time_diff(input$mon_startup[1],input$mon_startup[2])
+    updateSliderInput(session,'mon_startup',value=c(mon_occ_start() + diff, mon_occ_start()))
+  })
+  
+  tue_startup_end <- reactive({input$tue_startup[2]})
+  tue_occ_start <- reactive({input$tue_slider[1]})
+  
+  observeEvent(tue_startup_end(),{
+    diff <- time_diff(input$tue_slider[1],input$tue_slider[2]) * -1
+    updateSliderInput(session,'tue_slider',value=c(tue_startup_end(),tue_startup_end() + diff))
+  })
+  
+  observeEvent(tue_occ_start(),{
+    diff <- time_diff(input$tue_startup[1],input$tue_startup[2])
+    updateSliderInput(session,'tue_startup',value=c(tue_occ_start() + diff, tue_occ_start()))
+  })
+  
+  wed_startup_end <- reactive({input$wed_startup[2]})
+  wed_occ_start <- reactive({input$wed_slider[1]})
+  
+  observeEvent(wed_startup_end(),{
+    diff <- time_diff(input$wed_slider[1],input$wed_slider[2]) * -1
+    updateSliderInput(session,'wed_slider',value=c(wed_startup_end(),wed_startup_end() + diff))
+  })
+  
+  observeEvent(wed_occ_start(),{
+    diff <- time_diff(input$wed_startup[1],input$wed_startup[2])
+    updateSliderInput(session,'wed_startup',value=c(wed_occ_start() + diff, wed_occ_start()))
+  })
+  
+  thu_startup_end <- reactive({input$thu_startup[2]})
+  thu_occ_start <- reactive({input$thu_slider[1]})
+  
+  observeEvent(thu_startup_end(),{
+    diff <- time_diff(input$thu_slider[1],input$thu_slider[2]) * -1
+    updateSliderInput(session,'thu_slider',value=c(thu_startup_end(),thu_startup_end() + diff))
+  })
+  
+  observeEvent(thu_occ_start(),{
+    diff <- time_diff(input$thu_startup[1],input$thu_startup[2])
+    updateSliderInput(session,'thu_startup',value=c(thu_occ_start() + diff, thu_occ_start()))
+  })
+  
+  fri_startup_end <- reactive({input$fri_startup[2]})
+  fri_occ_start <- reactive({input$fri_slider[1]})
+  
+  observeEvent(fri_startup_end(),{
+    diff <- time_diff(input$fri_slider[1],input$fri_slider[2]) * -1
+    updateSliderInput(session,'fri_slider',value=c(fri_startup_end(),fri_startup_end() + diff))
+  })
+  
+  observeEvent(fri_occ_start(),{
+    diff <- time_diff(input$fri_startup[1],input$fri_startup[2])
+    updateSliderInput(session,'fri_startup',value=c(fri_occ_start() + diff, fri_occ_start()))
+  })
+  
+  sat_startup_end <- reactive({input$sat_startup[2]})
+  sat_occ_start <- reactive({input$sat_slider[1]})
+  
+  observeEvent(sat_startup_end(),{
+    diff <- time_diff(input$sat_slider[1],input$sat_slider[2]) * -1
+    updateSliderInput(session,'sat_slider',value=c(sat_startup_end(),sat_startup_end() + diff))
+  })
+  
+  observeEvent(sat_occ_start(),{
+    diff <- time_diff(input$sat_startup[1],input$sat_startup[2])
+    updateSliderInput(session,'sat_startup',value=c(sat_occ_start() + diff, sat_occ_start()))
+  })
+
   #Prep Timeinputs
   #NOTE: inputs sun_start, sun_end etc aree of clas POSIXlt
   sun <- reactive({
@@ -848,12 +941,6 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$sun_startup,{
-    updateSliderInput(session,'sun_slider',label = 'Sunday Occupied Hours',
-                      min=input$sun_startup[2],
-                      value= c(input$sun_startup[2],input$sun_startup[2]+32*STEP))
-  })
-  
   mon <- reactive({
     if(input$mon_occ == FALSE){
       return(c('NA','NA','NA'))
@@ -867,12 +954,7 @@ server <- function(input, output, session) {
       return(mon)
     }
   })
-  
-  observeEvent(input$mon_startup,{
-    updateSliderInput(session,'mon_slider',label = 'Monday Occupied Hours',
-                      min=input$mon_startup[2],
-                      value= c(input$mon_startup[2],input$mon_startup[2]+32*STEP))
-  })
+
   tue <- reactive({
     if(input$tue_occ == FALSE){
       return(c('NA','NA','NA'))
@@ -885,12 +967,6 @@ server <- function(input, output, session) {
       tue <- c(startup_start,startup_end,start,end)
       return(tue)
     }
-  })
-  
-  observeEvent(input$tue_startup,{
-    updateSliderInput(session,'tue_slider',label = 'Tuesday Occupied Hours',
-                      min=input$tue_startup[2],
-                      value= c(input$tue_startup[2],input$tue_startup[2]+32*STEP))
   })
   
   wed <- reactive({
@@ -907,12 +983,6 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$wed_startup,{
-    updateSliderInput(session,'wed_slider',label = 'Wednesday Occupied Hours',
-                      min=input$wed_startup[2],
-                      value= c(input$wed_startup[2],input$wed_startup[2]+32*STEP))
-  })
-  
   thu <- reactive({
     if(input$thu_occ == FALSE){
       return(c('NA','NA','NA'))
@@ -925,12 +995,6 @@ server <- function(input, output, session) {
       thu <- c(startup_start,startup_end,start,end)
       return(thu)
     }
-  })
-  
-  observeEvent(input$thu_startup,{
-    updateSliderInput(session,'thu_slider',label = 'Thursday Occupied Hours',
-                      min=input$thu_startup[2],
-                      value= c(input$thu_startup[2],input$thu_startup[2]+32*STEP))
   })
   
   fri <- reactive({
@@ -947,12 +1011,6 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$fri_startup,{
-    updateSliderInput(session,'fri_slider',label = 'Friday Occupied Hours',
-                      min=input$fri_startup[2],
-                      value= c(input$fri_startup[2],input$fri_startup[2]+32*STEP))
-  })
-  
   sat <- reactive({
     if(input$sat_occ == FALSE){
       return(c('NA','NA','NA'))
@@ -966,14 +1024,7 @@ server <- function(input, output, session) {
       return(sat)
     }
   })
-  
-  observeEvent(input$sat_startup,{
-    updateSliderInput(session,'sat_slider',label = 'Saturday Occupied Hours',
-                      min=input$sat_startup[2],
-                      value= c(input$sat_startup[2],input$sat_startup[2]+32*STEP))
-  })
-  
-  
+
   #Flag for when download_button pressed
   rv <- reactiveValues(download_flag = 0)
   

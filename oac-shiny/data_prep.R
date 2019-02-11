@@ -195,3 +195,8 @@ fix_fan_endpoints <- function(fan_data, date_range){
 occupancy_rects <- function(schedule,date_range,ymax,ymin){
   
 }
+
+#return diff_time in seconds between two times
+time_diff <- function(time1,time2){
+  as.integer(difftime(time1,time2,units='secs'))
+}
