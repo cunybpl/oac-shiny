@@ -10,6 +10,7 @@ DAY_START <- as.POSIXlt("09:00",tz=TZ,"%H:%M")
 DAY_END <- as.POSIXlt("17:00",tz=TZ,"%H:%M")
 STARTUP_START <- as.POSIXlt("7:00",tz=TZ,"%H:%M")
 STEP <- 900 #15 minutes
+TIME_FORM = "%I:%M %p"
 
 
 occupancyTab <- tabPanel('Occupancy',
@@ -23,7 +24,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min=DAY_MIN,max=DAY_MAX,
                                                     value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         )
                                ),
@@ -33,7 +34,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value=c(DAY_START,DAY_END),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         
                                         ,offset = 2)
@@ -48,7 +49,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         )
                                ),
@@ -58,7 +59,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value=c(DAY_START,DAY_END),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         
                                         ,offset = 2)
@@ -73,7 +74,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         )
                                ),
@@ -83,7 +84,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value=c(DAY_START,DAY_END),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         
                                         ,offset = 2)
@@ -98,7 +99,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         )
                                ),
@@ -108,7 +109,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value=c(DAY_START,DAY_END),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         
                                         ,offset = 2)
@@ -123,7 +124,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         )
                                ),
@@ -133,7 +134,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value=c(DAY_START,DAY_END),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         
                                         ,offset = 2)
@@ -148,7 +149,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         )
                                ),
@@ -158,7 +159,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value=c(DAY_START,DAY_END),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         
                                         ,offset = 2)
@@ -173,7 +174,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value= c(STARTUP_START,DAY_START),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         )
                                ),
@@ -183,7 +184,7 @@ occupancyTab <- tabPanel('Occupancy',
                                                     min= DAY_MIN,max=DAY_MAX,
                                                     value=c(DAY_START,DAY_END),
                                                     step=STEP,
-                                                    timeFormat="%H:%M",
+                                                    timeFormat=TIME_FORM,
                                                     timezone=TZ)
                                         
                                         ,offset = 2)
