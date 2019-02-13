@@ -1,6 +1,5 @@
 #Outside Air Control Interactive Plotting
-#Daniel Vignoles, Mark Campmier
-
+#Daniel Vignoles,
 #SERVER
 
 #***********This application assumes all .csv's are retrieved/exported through HOBOware***********
@@ -23,33 +22,7 @@ library(shinyjs)
 source("data_prep.R")
 
 server <- function(input, output, session) {
-  #Check if individual files are uploaded, used in conditionalPanel UI
-  output$datUploaded <- reactive({
-    return(!is.null(input$datFile))
-  })
-  outputOptions(output, 'datUploaded', suspendWhenHidden = FALSE)
-  
-  
-  output$matUploaded <- reactive({
-    return(!is.null(input$matFile))
-  })
-  outputOptions(output, 'matUploaded', suspendWhenHidden = FALSE)
-  
-  output$oatUploaded <- reactive({
-    return(!is.null(input$oatFile))
-  })
-  outputOptions(output, 'oatUploaded', suspendWhenHidden = FALSE)
-  
-  output$ratUploaded <- reactive({
-    return(!is.null(input$ratFile))
-  })
-  outputOptions(output, 'ratUploaded', suspendWhenHidden = FALSE)
-  
-  output$fanUploaded <- reactive({
-    return(!is.null(input$fanFile))
-  })
-  outputOptions(output, 'fanUploaded', suspendWhenHidden = FALSE)
-  
+
   #dataUploaded() returns TRUE/FALSE for whether there is data to display
   dataUploaded <- reactive({
     datNull <- is.null(input$datFile)
@@ -60,26 +33,31 @@ server <- function(input, output, session) {
     isThereData <- !datNull || !matNull || !oatNull || !ratNull
   })
   
+  #Disable/Enable Occupancy & Fan inputs
+  disable('occFile')
+  observeEvent(dataUploaded(), {
+    if (dataUploaded() == TRUE) {
+      enable('occFile')
+    }
+  })
+  
+  disable('fanFile')
+  observeEvent(dataUploaded(), {
+    if (dataUploaded() == TRUE) {
+      enable('fanFile')
+    }
+  })
+  
   #combine update buttons
   updatePlot <- reactive({
     input$update_plot + input$update_plot2
   })
   
-  #Determine whether or not to display "Display Data Table" checkbox, used in Conditional UI Panel
+  #Determine whether or not to display DAT,MAT,etc. checkboxes, used in Conditional UI Panel
   output$show_Plot_Options <- eventReactive(updatePlot(), {
     dataUploaded()
   })
   outputOptions(output, 'show_Plot_Options', suspendWhenHidden = FALSE)
-  
-  # output$start_instructions <- renderUI({
-  #   str1 <- paste('TO GET STARTED:')
-  #   str2 <-  paste('1. In the Left Panel, click browse under the trend (DAT, MAT, etc.) you wish to upload')
-  #   str3 <- paste('2. In the popup window, find the .csv file that corresponds to your trend')
-  #   str4 <- paste('3. Repeat 1-2 for as many trends as you wish')
-  #   str5 <- paste('4. Click Update Plot to display the Plot of your uploaded data')
-  #
-  #   h4(HTML(paste(str1,str2,str3,str4,str5, sep = '<br/>')))
-  # })
   
   url <-
     a("HELP", href = "https://docs.google.com/document/d/e/2PACX-1vSqYcgS51UgN6R32jMq1mfZteSTSWqYPOwzM8wJE9ael5R6SjuC2N-fK-I26-bOpOZtDRL8L7ibM7ku/pub", target =
@@ -87,6 +65,8 @@ server <- function(input, output, session) {
   output$help_link <- renderUI({
     tagList(h4(url))
   })
+  
+  ####----DATA----####
   
   #Retrieve processed DAT xts object
   datData <- reactive({
@@ -151,7 +131,7 @@ server <- function(input, output, session) {
   #Disable/Enable Plot Checkboxes
   disable('DATCheckbox')
   enable_dat <- eventReactive(datData(), {
-    if (!is.na(datData())) {
+    if (!all(is.na(datData()))) {
       return(TRUE)
     }
     else{
@@ -161,7 +141,7 @@ server <- function(input, output, session) {
   
   disable('MATCheckbox')
   enable_mat <- eventReactive(matData(), {
-    if (!is.na(matData())) {
+    if (!all(is.na(matData()))) {
       return(TRUE)
     }
     else{
@@ -171,7 +151,7 @@ server <- function(input, output, session) {
   
   disable('OATCheckbox')
   enable_oat <- eventReactive(oatData(), {
-    if (!is.na(oatData())) {
+    if (!all(is.na(oatData()))) {
       return(TRUE)
     }
     else{
@@ -181,7 +161,7 @@ server <- function(input, output, session) {
   
   disable('RATCheckbox')
   enable_rat <- eventReactive(ratData(), {
-    if (!is.na(ratData())) {
+    if (!all(is.na(ratData()))) {
       return(TRUE)
     }
     else{
@@ -191,7 +171,7 @@ server <- function(input, output, session) {
   
   disable('fan_statusCheckbox')
   enable_fan <- eventReactive(fanData(), {
-    if (!is.na(fanData())) {
+    if (!all(is.na(fanData()))) {
       return(TRUE)
     }
     else{
@@ -199,6 +179,7 @@ server <- function(input, output, session) {
     }
   })
   
+  #Disable/Enable checkboxes when plot refreshes
   observeEvent(updatePlot(), {
     if (enable_dat()) {
       enable('DATCheckbox')
@@ -380,22 +361,6 @@ server <- function(input, output, session) {
     dr <- paste0(start, "/", end)
     data <- data_all()[dr]
   })
-  
-  # #OCCUPANCY
-  disable('occFile')
-  observeEvent(dataUploaded(), {
-    if (dataUploaded() == TRUE) {
-      enable('occFile')
-    }
-  })
-  
-  disable('fanFile')
-  observeEvent(dataUploaded(), {
-    if (dataUploaded() == TRUE) {
-      enable('fanFile')
-    }
-  })
-  
   
   occData <- reactive({
     if (!is.null(input$occFile)) {
@@ -876,7 +841,7 @@ server <- function(input, output, session) {
     }
   })
   
-  #Slider Behavior
+  ####----Slider Behavior---####
   
   sun_startup_end <- reactive({
     input$sun_startup[2]
@@ -1026,7 +991,7 @@ server <- function(input, output, session) {
   })
   
   #Prep Timeinputs
-  #NOTE: inputs sun_start, sun_end etc aree of clas POSIXlt
+  #NOTE: inputs sun_start, sun_end etc aree of class POSIXlt
   sun <- reactive({
     if (input$sun_occ == FALSE) {
       return(c('NA', 'NA', 'NA'))

@@ -31,7 +31,6 @@ get_date_times <- function(data){
     dates <- parse_date_time(col,orders = formats)
     
     result <- list('datetimes' = dates,'start_pos' = start)
-    print(result$start_pos)
     return(result)
   }else{
     return(NA)
@@ -64,7 +63,7 @@ data_sorter <- function(filein){
     #convert string datetimes to POSIX, assumes year,month,day,hour,minute,second format (HOBOWARE)
     gtd <- get_date_times(complete)
     
-    if(is.na(gtd)){ #first column not datetime column
+    if(all(is.na(gtd))){ #first column not datetime column
       complete <- datain[complete.cases(datain[,2:3]),]
       
       complete <- subset(complete, select = -1)

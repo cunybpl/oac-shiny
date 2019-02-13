@@ -36,12 +36,6 @@ ui <-
                       "text/comma-separated-values,text/plain",
                       ".csv")
           ),
-          textOutput('DAT_serial'), #TODO
-          textOutput('DAT_dates'), #TODO
-          # conditionalPanel(condition = "output.datUploaded",
-          #                  checkboxInput("DATCheckbox", label = "Display DAT Plot.", value = TRUE)
-          # ),
-          
           #MAT file input
           fileInput("matFile", "Choose CSV File for Mixed Air Temperature (MAT)",
                     accept = c(
@@ -49,10 +43,6 @@ ui <-
                       "text/comma-separated-values,text/plain",
                       ".csv")
           ), 
-          # conditionalPanel(condition = "output.matUploaded",
-          #                  checkboxInput("MATCheckbox", label = "Display MAT Plot", value = TRUE)
-          # ),
-          
           #OAT file input
           fileInput("oatFile", "Choose CSV File for Outside Air Temperature (OAT)",
                     accept = c(
@@ -60,10 +50,6 @@ ui <-
                       "text/comma-separated-values,text/plain",
                       ".csv")
           ),
-          # conditionalPanel(condition = "output.oatUploaded",
-          #                  checkboxInput("OATCheckbox", label = "Display OAT Plot.", value = TRUE)
-          # ),
-          
           #RAT file input
           fileInput("ratFile", "Choose CSV File for Return Air Temperature (RAT)",
                     accept = c(
@@ -71,26 +57,20 @@ ui <-
                       "text/comma-separated-values,text/plain",
                       ".csv")
           ),
-          # conditionalPanel(condition = "output.ratUploaded",
-          #                  checkboxInput("RATCheckbox", label = "Display RAT Plot. ", value = TRUE)
-          # ),
-          
           #Fan Status file input
-          fileInput("fanFile", "Choose CSV File for Fan Status (At Least 1 Temperature Trend Required First)",
+          fileInput("fanFile", "Choose CSV File for Fan Status",
                     accept = c(
                       "text/csv",
                       "text/comma-separated-values,text/plain",
                       ".csv")
           ),
-          fileInput("occFile", "Choose CSV File for Occupancy Schedule (At Least 1 Temperature Trend Required First)",
+          #Occupancy file input
+          fileInput("occFile", "Choose CSV File for Occupancy Schedule",
                     accept = c(
                       "text/csv",
                       "text/comma-separated-values,text/plain",
                       ".csv")
           ),
-          # conditionalPanel(condition = "output.fanUploaded",
-          #                  checkboxInput("fan_statusCheckbox", label = "Display Fan Status.", value = TRUE)
-          # ),
           #Date Range Selection
           uiOutput("date_range"),
           actionButton("update_plot",label = "Update Plot!", width = '100%'),
@@ -107,7 +87,7 @@ ui <-
       #Plot output
       plotlyOutput("plot",height = '500px'),
       
-      #Data Table Output
+      #Trend Checkboxes
       conditionalPanel(condition = "output.show_Plot_Options",
                        
                        div(style="display: inline-block;vertical-align:top; width: 160px;",
