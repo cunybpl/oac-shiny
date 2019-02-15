@@ -9,7 +9,7 @@
 
 ### Uploading Data
 
-To use this application you need _at least_ one **.csv** file corresponding logger data from:
+To use this application you need _at least_ one **.csv** file corresponding to logger data from:
 
 * Discharge Air Temperature (**DAT**)
 * Mixed Air Temperature (**MAT**)
@@ -32,6 +32,8 @@ Optionally, you can include:
 **3.** After uploading your **.csv** files, Click "**Update Plot!**" to update the plotting window on the right. 
 
 
+***
+
 
 ### Manipulating your Plot
 
@@ -45,10 +47,18 @@ From the plotting window you can zoom in/out, hide /show trends, rename your plo
 
 From Left to Right: 
 
-* The "_Download plot as png_"  tool downloads your current plot to **.png** file you can save and share. 
+* The "_Download plot as png_"  tool downloads your current plot to .png file you can save and share. 
 * The "_Zoom_" tool (selected by default), allows zoom into a selected area of the plot. To use _zoom_, _click and drag_ on the plotting window. 
 * The "_Pan_" tool allows you to move the plotting window. To _pan, click and drag_ on the plotting window. 
 * The "_Zoom in_" and "_Zoom out_" buttons zoom in and out of the plot by a set increment. 
 * The "_Autoscale_" and "_Reset Axes_" buttons reset the plot to it's starting position.
 
-**2.**  If you wish to hide a specific trend, click the appropriate check-box under the plotting window. Click "Update Plot!"(**4**) touncheckuncheck
+**2.**  If you wish to hide a specific trend, click the appropriate check-box under the plotting window. Click "**Update Plot!**"(**4**) touncheckuncheck
+
+**3.** Enter a title into the "**Plot Title**" text box to rename your plot. Then click '**Update Plot!**"(**4**).
+
+***
+
+### Adding an Occupancy Schedule
+
+To create an occupancy schedule, navigate to the occupancy wndow by clicking **Occupancy** in the top menu bar. 
