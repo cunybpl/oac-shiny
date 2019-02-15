@@ -11,6 +11,7 @@ library(lubridate)
 library(plotly)
 library(DT)
 library(shinyjs)
+library(markdown)
 source("data_prep.R")
 source("occupancy_ui.R")
 
@@ -24,7 +25,13 @@ ui <-
   tags$head(
     tags$style(type="text/css", ".dataTables_filter {display: none;    }"
     )),
-  
+  tabPanel('Tutorial',
+           fluidPage(
+                column(8,offset=2,
+               includeMarkdown("../oac-tutorial.md")
+           )
+           )
+  ),
   tabPanel('Plotting',
     sidebarPanel(
       div(id = "noBAS Visualization",
@@ -73,8 +80,7 @@ ui <-
           ),
           #Date Range Selection
           uiOutput("date_range"),
-          actionButton("update_plot",label = "Update Plot!", width = '100%'),
-          br(),br(),uiOutput("help_link")
+          actionButton("update_plot",label = "Update Plot!", width = '100%')
           
       )#div
     ),#sidebarPanel
