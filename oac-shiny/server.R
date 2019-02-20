@@ -665,23 +665,23 @@ server <- function(input, output, session) {
   trend_colors[2] <- 'blue'
   trend_colors[3] <- 'green'
   trend_colors[4] <- 'violet'
-  trend_colors[5] <- 'darkgrey'
+  trend_colors[5] <- '#808080'
   names(trend_colors) <- c('DAT', 'MAT', 'OAT', 'RAT', 'fan_status')
   
   #PLOT
   
   plotVal <- eventReactive(updatePlot(), {
     #Left y-axis (temperature)
-    y <- list(title = "Temperature")
+    y <- list(title = "Temperature",overlaying='y2')
     
     #x-axis (time)
     x <- list(nticks = 50,
               tickangle = -90)
     
     #Right y-axis (fan_status)
-    ay <- list(
+    y2 <- list(
       tickfont = list(color = "red"),
-      overlaying = "y",
+      showgrid=FALSE,
       side = "right",
       title = "Fan Status"
     )
@@ -755,7 +755,7 @@ server <- function(input, output, session) {
                 name = 'Fan Status',
                 line = list(color = eval(t_color), width = 4)
               ) %>%
-              layout(yaxis2 = ay)
+              layout(yaxis2 = y2)
             
           }
         }

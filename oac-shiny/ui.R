@@ -15,8 +15,6 @@ library(markdown)
 source("data_prep.R")
 source("occupancy_ui.R")
 
-PAGE_TITLE <- 'noBAS OAC'
-
 ui <- 
   navbarPage(theme=shinytheme('yeti'),title="noBAS OAC",selected='Plotting',
   useShinyjs(),

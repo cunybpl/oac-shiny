@@ -4,7 +4,7 @@
 
 This tutorial describes the proccess of uploading and trending **.csv** files for Ouside Air Control analysis. 
 
-In order for this tool to function properly, all **.csv** files must be obtained through _Hoboware_. 
+In order for this tool to function properly, all **.csv** files must be obtained through [_HOBOware_](https://www.onsetcomp.com/products/software/hoboware) or [_HOBOmobile_](https://www.onsetcomp.com/products/software/hobomobile). 
 
 ***
 
