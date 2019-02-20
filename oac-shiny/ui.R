@@ -15,10 +15,10 @@ library(markdown)
 source("data_prep.R")
 source("occupancy_ui.R")
 
-PAGE_TITLE <- 'NO-BAS OAC'
+PAGE_TITLE <- 'noBAS OAC'
 
 ui <- 
-  navbarPage(theme=shinytheme('yeti'),title="NOBAS OAC",selected='Plotting',
+  navbarPage(theme=shinytheme('yeti'),title="noBAS OAC",selected='Plotting',
   useShinyjs(),
   
   #Surpress Search Bar in DataTable
@@ -28,7 +28,7 @@ ui <-
   tabPanel('Tutorial',
            fluidPage(
                 column(8,offset=2,
-               includeMarkdown("../oac-tutorial.md")
+               includeMarkdown("oac-tutorial.md")
            )
            )
   ),

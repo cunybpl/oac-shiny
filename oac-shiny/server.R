@@ -33,6 +33,11 @@ server <- function(input, output, session) {
     isThereData <- !datNull || !matNull || !oatNull || !ratNull
   })
   
+  #TRUE/FALSE for whether at least on trend checkbox is checked
+  dataEnabled <- reactive({
+    atLeastOneCheckbox <- input$DATCheckbox || input$MATCheckbox || input$OATCheckbox || input$RATCheckbox || input$fan_statusCheckbox
+  })
+  
   #Disable/Enable Occupancy & Fan inputs
   disable('occFile')
   observeEvent(dataUploaded(), {
@@ -334,7 +339,7 @@ server <- function(input, output, session) {
   
   #fix fanData() so endpoints are not cutof by date_range
   fan_clean <- eventReactive(updatePlot(), {
-    if (!is.na(fanData())) {
+    if (all(!is.na(fanData()))) {
       fan_fixed <- fix_fan_endpoints(fanData(), input$date_range)
     }
     else{
@@ -390,7 +395,7 @@ server <- function(input, output, session) {
     input$date_range
   },
   {
-    if (is.na(occData())) {
+    if (all(is.na(occData()))) {
       return(NA)
     }
     else{
@@ -405,7 +410,7 @@ server <- function(input, output, session) {
       startup_rects <- list()
       occ_rects <- list()
       
-      
+      line_properties = list(width=0)
       
       for (row in 1:nrow(df)) {
         date <- substr(df[row, 'dates'], 1, 10)
@@ -415,6 +420,7 @@ server <- function(input, output, session) {
         if (wday == 'Sunday' && !is.na(occData()[1, 3])) {
           startup_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[1, 3]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[1, 4]), tz = 'UTC'),
             y0 = 0,
@@ -428,6 +434,7 @@ server <- function(input, output, session) {
           )
           occ_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[1, 5]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[1, 6]), tz = 'UTC'),
             y0 = 0,
@@ -446,6 +453,7 @@ server <- function(input, output, session) {
         else if (wday == 'Monday' && !is.na(occData()[2, 3])) {
           startup_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[2, 3]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[2, 4]), tz = 'UTC'),
             y0 = 0,
@@ -459,6 +467,7 @@ server <- function(input, output, session) {
           )
           occ_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[2, 5]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[2, 6]), tz = 'UTC'),
             y0 = 0,
@@ -478,6 +487,7 @@ server <- function(input, output, session) {
         else if (wday == 'Tuesday' && !is.na(occData()[3, 3])) {
           startup_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[3, 3]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[3, 4]), tz = 'UTC'),
             y0 = 0,
@@ -491,6 +501,7 @@ server <- function(input, output, session) {
           )
           occ_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[3, 5]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[3, 6]), tz = 'UTC'),
             y0 = 0,
@@ -510,6 +521,7 @@ server <- function(input, output, session) {
         else if (wday == 'Wednesday' && !is.na(occData()[4, 3])) {
           startup_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[4, 3]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[4, 4]), tz = 'UTC'),
             y0 = 0,
@@ -523,6 +535,7 @@ server <- function(input, output, session) {
           )
           occ_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[4, 5]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[4, 6]), tz = 'UTC'),
             y0 = 0,
@@ -542,6 +555,7 @@ server <- function(input, output, session) {
         else if (wday == 'Thursday' && !is.na(occData()[5, 3])) {
           startup_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[5, 3]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[5, 4]), tz = 'UTC'),
             y0 = 0,
@@ -555,6 +569,7 @@ server <- function(input, output, session) {
           )
           occ_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[5, 5]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[5, 6]), tz = 'UTC'),
             y0 = 0,
@@ -574,6 +589,7 @@ server <- function(input, output, session) {
         else if (wday == 'Friday' && !is.na(occData()[6, 3])) {
           startup_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[6, 3]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[6, 4]), tz = 'UTC'),
             y0 = 0,
@@ -587,6 +603,7 @@ server <- function(input, output, session) {
           )
           occ_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[6, 5]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[6, 6]), tz = 'UTC'),
             y0 = 0,
@@ -606,6 +623,7 @@ server <- function(input, output, session) {
         else if (wday == 'Saturday' && !is.na(occData()[7, 3])) {
           startup_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[7, 3]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[7, 4]), tz = 'UTC'),
             y0 = 0,
@@ -619,6 +637,7 @@ server <- function(input, output, session) {
           )
           occ_rect <- list(
             type = 'rect',
+            line = line_properties,
             x0 = ymd_hm(paste(date, occData()[7, 5]), tz = 'UTC'),
             x1 = ymd_hm(paste(date, occData()[7, 6]), tz = 'UTC'),
             y0 = 0,
@@ -684,7 +703,7 @@ server <- function(input, output, session) {
     
     leg <- list()
     
-    if (dataUploaded()) {
+    if (dataUploaded() && dataEnabled()) {
       df <- isolate(Data_in_dateRange())
       
       #converts to dataframe
@@ -697,7 +716,7 @@ server <- function(input, output, session) {
       
       #Empty plotly
       plt <-
-        plot_ly() %>% layout(title = input$plot_title,
+        plot_ly(type = 'scatter', mode = 'lines') %>% layout(title = input$plot_title,
                              yaxis = y,
                              xaxis = x)
       
@@ -742,7 +761,7 @@ server <- function(input, output, session) {
         }
       }
       
-      if (!is.na(occRects())) {
+      if (all(!is.na(occRects()))) {
         plt <- plt %>% layout(plot_bgcolor = "#d7d2d2", shapes = occRects())
       }
       plt
