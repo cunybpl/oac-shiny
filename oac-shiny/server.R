@@ -66,6 +66,14 @@ server <- function(input, output, session) {
   })
   outputOptions(output, 'show_Plot_Options', suspendWhenHidden = FALSE)
   
+  #Determine whether to display occupancy legend
+  
+  output$show_occ_legend <- eventReactive(updatePlot(), {
+    result <- !is.null(input$occFile)
+  })
+  outputOptions(output, 'show_occ_legend', suspendWhenHidden = FALSE)
+  
+  
   ####----DATA----####
   
   #Retrieve processed DAT xts object
