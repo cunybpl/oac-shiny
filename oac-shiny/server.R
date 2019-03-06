@@ -22,7 +22,6 @@ library(shinyjs)
 source("data_prep.R")
 
 server <- function(input, output, session) {
-
   #dataUploaded() returns TRUE/FALSE for whether there is data to display
   dataUploaded <- reactive({
     datNull <- is.null(input$datFile)
@@ -35,7 +34,10 @@ server <- function(input, output, session) {
   
   #TRUE/FALSE for whether at least on trend checkbox is checked
   dataEnabled <- reactive({
-    atLeastOneCheckbox <- input$DATCheckbox || input$MATCheckbox || input$OATCheckbox || input$RATCheckbox || input$fan_statusCheckbox
+    atLeastOneCheckbox <-
+      input$DATCheckbox ||
+      input$MATCheckbox ||
+      input$OATCheckbox || input$RATCheckbox || input$fan_statusCheckbox
   })
   
   #Disable/Enable Occupancy & Fan inputs
@@ -209,22 +211,26 @@ server <- function(input, output, session) {
     
     #TODO: prettify this code
     if (datNull == FALSE &&
-        (matNull == TRUE) && (oatNull == TRUE) && (ratNull == TRUE)) {
+        (matNull == TRUE) &&
+        (oatNull == TRUE) && (ratNull == TRUE)) {
       "dat"
     }
     
     else if (matNull == FALSE &&
-             (datNull == TRUE) && (oatNull == TRUE) && (ratNull == TRUE)) {
+             (datNull == TRUE) &&
+             (oatNull == TRUE) && (ratNull == TRUE)) {
       "mat"
     }
     
     else if (oatNull == FALSE &&
-             (matNull == TRUE) && (datNull == TRUE) && (ratNull == TRUE)) {
+             (matNull == TRUE) &&
+             (datNull == TRUE) && (ratNull == TRUE)) {
       "oat"
     }
     
     else if (ratNull == FALSE &&
-             (matNull == TRUE) && (oatNull == TRUE) && (datNull == TRUE)) {
+             (matNull == TRUE) &&
+             (oatNull == TRUE) && (datNull == TRUE)) {
       "rat"
     }
     else{
@@ -410,7 +416,7 @@ server <- function(input, output, session) {
       startup_rects <- list()
       occ_rects <- list()
       
-      line_properties = list(width=0)
+      line_properties = list(width = 0)
       
       for (row in 1:nrow(df)) {
         date <- substr(df[row, 'dates'], 1, 10)
@@ -672,7 +678,7 @@ server <- function(input, output, session) {
   
   plotVal <- eventReactive(updatePlot(), {
     #Left y-axis (temperature)
-    y <- list(title = "Temperature",overlaying='y2')
+    y <- list(title = "Temperature", overlaying = 'y2')
     
     #x-axis (time)
     x <- list(nticks = 50,
@@ -681,7 +687,7 @@ server <- function(input, output, session) {
     #Right y-axis (fan_status)
     y2 <- list(
       tickfont = list(color = "red"),
-      showgrid=FALSE,
+      showgrid = FALSE,
       side = "right",
       title = "Fan Status"
     )
@@ -717,13 +723,13 @@ server <- function(input, output, session) {
       #Empty plotly
       plt <-
         plot_ly(type = 'scatter', mode = 'lines') %>% layout(title = input$plot_title,
-                             yaxis = y,
-                             xaxis = x)
+                                                             yaxis = y,
+                                                             xaxis = x)
       
       #add available traces to plt
       for (trace in cols) {
         #omit indexes with NA values
-        keep <- subset(df,!is.na(df[trace]))
+        keep <- subset(df, !is.na(df[trace]))
         keepTrace <- parse(text = paste0("keep$", trace))
         t_color <- parse(text = paste0("trend_colors$", trace))
         
@@ -753,7 +759,7 @@ server <- function(input, output, session) {
                 y = fan_status,
                 yaxis = 'y2',
                 name = 'Fan Status',
-                line = list(color = eval(t_color), width = 4)
+                line = list(color = eval(t_color))
               ) %>%
               layout(yaxis2 = y2)
             
@@ -1013,8 +1019,10 @@ server <- function(input, output, session) {
         strftime(input$sun_startup[1], format = TIME_FORM, tz = TZ)
       startup_end <-
         strftime(input$sun_startup[2], format = TIME_FORM, tz = TZ)
-      start <- strftime(input$sun_slider[1], format = TIME_FORM, tz = TZ)
-      end <- strftime(input$sun_slider[2], format = TIME_FORM, tz = TZ)
+      start <-
+        strftime(input$sun_slider[1], format = TIME_FORM, tz = TZ)
+      end <-
+        strftime(input$sun_slider[2], format = TIME_FORM, tz = TZ)
       
       sun <- c(startup_start, startup_end, start, end)
       return(sun)
@@ -1029,8 +1037,10 @@ server <- function(input, output, session) {
         strftime(input$mon_startup[1], format = TIME_FORM, tz = TZ)
       startup_end <-
         strftime(input$mon_startup[2], format = TIME_FORM, tz = TZ)
-      start <- strftime(input$mon_slider[1], format = TIME_FORM, tz = TZ)
-      end <- strftime(input$mon_slider[2], format = TIME_FORM, tz = TZ)
+      start <-
+        strftime(input$mon_slider[1], format = TIME_FORM, tz = TZ)
+      end <-
+        strftime(input$mon_slider[2], format = TIME_FORM, tz = TZ)
       
       mon <- c(startup_start, startup_end, start, end)
       return(mon)
@@ -1045,8 +1055,10 @@ server <- function(input, output, session) {
         strftime(input$tue_startup[1], format = TIME_FORM, tz = TZ)
       startup_end <-
         strftime(input$tue_startup[2], format = TIME_FORM, tz = TZ)
-      start <- strftime(input$tue_slider[1], format = TIME_FORM, tz = TZ)
-      end <- strftime(input$tue_slider[2], format = TIME_FORM, tz = TZ)
+      start <-
+        strftime(input$tue_slider[1], format = TIME_FORM, tz = TZ)
+      end <-
+        strftime(input$tue_slider[2], format = TIME_FORM, tz = TZ)
       
       tue <- c(startup_start, startup_end, start, end)
       return(tue)
@@ -1061,8 +1073,10 @@ server <- function(input, output, session) {
         strftime(input$wed_startup[1], format = TIME_FORM, tz = TZ)
       startup_end <-
         strftime(input$wed_startup[2], format = TIME_FORM, tz = TZ)
-      start <- strftime(input$wed_slider[1], format = TIME_FORM, tz = TZ)
-      end <- strftime(input$wed_slider[2], format = TIME_FORM, tz = TZ)
+      start <-
+        strftime(input$wed_slider[1], format = TIME_FORM, tz = TZ)
+      end <-
+        strftime(input$wed_slider[2], format = TIME_FORM, tz = TZ)
       
       wed <- c(startup_start, startup_end, start, end)
       return(wed)
@@ -1077,8 +1091,10 @@ server <- function(input, output, session) {
         strftime(input$thu_startup[1], format = TIME_FORM, tz = TZ)
       startup_end <-
         strftime(input$thu_startup[2], format = TIME_FORM, tz = TZ)
-      start <- strftime(input$thu_slider[1], format = TIME_FORM, tz = TZ)
-      end <- strftime(input$thu_slider[2], format = TIME_FORM, tz = TZ)
+      start <-
+        strftime(input$thu_slider[1], format = TIME_FORM, tz = TZ)
+      end <-
+        strftime(input$thu_slider[2], format = TIME_FORM, tz = TZ)
       
       thu <- c(startup_start, startup_end, start, end)
       return(thu)
@@ -1093,8 +1109,10 @@ server <- function(input, output, session) {
         strftime(input$fri_startup[1], format = TIME_FORM, tz = TZ)
       startup_end <-
         strftime(input$fri_startup[2], format = TIME_FORM, tz = TZ)
-      start <- strftime(input$fri_slider[1], format = TIME_FORM, tz = TZ)
-      end <- strftime(input$fri_slider[2], format = TIME_FORM, tz = TZ)
+      start <-
+        strftime(input$fri_slider[1], format = TIME_FORM, tz = TZ)
+      end <-
+        strftime(input$fri_slider[2], format = TIME_FORM, tz = TZ)
       
       fri <- c(startup_start, startup_end, start, end)
       return(fri)
@@ -1109,8 +1127,10 @@ server <- function(input, output, session) {
         strftime(input$sat_startup[1], format = TIME_FORM, tz = TZ)
       startup_end <-
         strftime(input$sat_startup[2], format = TIME_FORM, tz = TZ)
-      start <- strftime(input$sat_slider[1], format = TIME_FORM, tz = TZ)
-      end <- strftime(input$sat_slider[2], format = TIME_FORM, tz = TZ)
+      start <-
+        strftime(input$sat_slider[1], format = TIME_FORM, tz = TZ)
+      end <-
+        strftime(input$sat_slider[2], format = TIME_FORM, tz = TZ)
       
       sat <- c(startup_start, startup_end, start, end)
       return(sat)
@@ -1137,25 +1157,25 @@ server <- function(input, output, session) {
     
     #Standard Week
     sunday <- c('sun', sun()[1], sun()[2], sun()[3], sun()[4])
-    df[1, ] <- sunday
+    df[1,] <- sunday
     
     monday <- c('mon', mon()[1], mon()[2], mon()[3], mon()[4])
-    df[2, ] <- monday
+    df[2,] <- monday
     
     tuesday <- c('tue', tue()[1], tue()[2], tue()[3], tue()[4])
-    df[3, ] <- tuesday
+    df[3,] <- tuesday
     
     wednesday <- c('wed', wed()[1], wed()[2], wed()[3], wed()[4])
-    df[4, ] <- wednesday
+    df[4,] <- wednesday
     
     thursday <- c('thu', thu()[1], thu()[2], thu()[3], thu()[4])
-    df[5, ] <- thursday
+    df[5,] <- thursday
     
     friday <- c('fri', fri()[1], fri()[2], fri()[3], fri()[4])
-    df[6, ] <- friday
+    df[6,] <- friday
     
     saturday <- c('sat', sat()[1], sat()[2], sat()[3], sat()[4])
-    df[7, ] <- saturday
+    df[7,] <- saturday
     
     return(df)
   })
@@ -1172,25 +1192,25 @@ server <- function(input, output, session) {
     
     #Standard Week
     sunday <- c('sun', sun()[1], sun()[2], sun()[3], sun()[4])
-    df[1, ] <- sunday
+    df[1,] <- sunday
     
     monday <- c('mon', mon()[1], mon()[2], mon()[3], mon()[4])
-    df[2, ] <- monday
+    df[2,] <- monday
     
     tuesday <- c('tue', tue()[1], tue()[2], tue()[3], tue()[4])
-    df[3, ] <- tuesday
+    df[3,] <- tuesday
     
     wednesday <- c('wed', wed()[1], wed()[2], wed()[3], wed()[4])
-    df[4, ] <- wednesday
+    df[4,] <- wednesday
     
     thursday <- c('thu', thu()[1], thu()[2], thu()[3], thu()[4])
-    df[5, ] <- thursday
+    df[5,] <- thursday
     
     friday <- c('fri', fri()[1], fri()[2], fri()[3], fri()[4])
-    df[6, ] <- friday
+    df[6,] <- friday
     
     saturday <- c('sat', sat()[1], sat()[2], sat()[3], sat()[4])
-    df[7, ] <- saturday
+    df[7,] <- saturday
     
     return(df)
   })
@@ -1200,7 +1220,8 @@ server <- function(input, output, session) {
   
   observe({
     toggleState('occ_csv',
-                condition = input$occ_filename != "" | is.null(input$occ_filename))
+                condition = input$occ_filename != "" |
+                  is.null(input$occ_filename))
   })
   output$occ_csv <- downloadHandler(
     filename = function() {
