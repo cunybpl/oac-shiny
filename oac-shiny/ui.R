@@ -109,6 +109,7 @@ ui <-
                        div(style="display: inline-block;vertical-align:top; width: 160px;",
                            checkboxInput("fan_statusCheckbox", label = "FAN", value = TRUE)
                        ),
+                       
                        br(),br(),br(),
                        textInput('plot_title','Plot Title',value='Outside Air Control',placeholder='Your Plot Title Here'),
                        
