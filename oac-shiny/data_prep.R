@@ -19,7 +19,7 @@ find_start <- function(column,formats){
 }
 
 get_date_times <- function(data){
-  formats <- c('Ymd HM','Ymd HMS','mdy IMS p')
+  formats <- c('Ymd HM','Ymd HMS','mdy IMS p', 'mdy HM')
   
   col1 <- data[[1]]
   #col2 <- data[[2]]
